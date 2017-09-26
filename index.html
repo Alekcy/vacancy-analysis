@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>test</title>
+	<script type="text/javascript" src="vue.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <search  v-on:press="press"></search>
+  <div v-if="searchField!==''">  <cards :values='values'></cards></div>
+
+  
+  	<div><canvas id="chart" width="400" height="400"></canvas>
+  </div>
+</div>
+<script src="jquery-3.2.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
+<script type="text/babel" src="index.js"></script>
+</body>
+</html>
