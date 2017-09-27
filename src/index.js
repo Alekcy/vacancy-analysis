@@ -68,6 +68,7 @@ Vue.component('search',{
   			country:'',
   			region:'',
   			countryList:[],
+  			idRegion:'',
   			regionsList:[{'name':"none"}]
   		}
   	},
@@ -80,6 +81,7 @@ Vue.component('search',{
   			
   			console.log('ind: '+item['id']);
   			console.log(this.countryList);
+  			this.idRegion = item['id'];
   			this.getRegions(item['id']);
   		},
   		regionChange:function(item){
@@ -99,11 +101,15 @@ Vue.component('search',{
 			return arr;
 		},
   		search:function(){
+  			var searchParams = [];
   			if(this.searchField!==''){
   				if(this.country!==''){
-  					
+  					searchParams = {'searchField':this.searchField,'idRegion':this.idRegion};
+  				}else{
+  					searchParams = {'searchField':this.searchField,'idRegion':''};
   				}
-  				this.$emit('press',this.searchField);
+  				console.log(searchParams);
+  				this.$emit('press',searchParams);
   				this.searchField = '';
   			}
   			
@@ -152,7 +158,8 @@ var app = new Vue ({
 		searchField:'',
 		see:true,
 		values:[],
-		chart:null
+		chart:null,
+		idRegion:''
 	},
 	mounted:function(){
 			console.log('created');
@@ -161,19 +168,22 @@ var app = new Vue ({
 	},
 	methods:{
 		addValue:function(){
-			console.log('sf'+this.searchField);
-			var response = ajax(this.searchField);
+			//console.log('sf'+this.searchField);
+			var response = ajax(this.searchField,this.idRegion);
 			var data = treatment(response,this.searchField);
 			this.values.push(data);
-			console.log(this.values);
+			//console.log(this.values);
 			updateChart(this.chart,data['title'],data['mid']);
 		},
-		press:function(val){
-			this.searchField = val;
+		press:function(searchParams){
+			this.searchField = searchParams['searchField'];
+			if(searchParams['idRegion']!==''){
+				this.idRegion = searchParams['idRegion'];
+			}
 			this.addValue();
 		},
 		del:function(index){
-			console.log(index);
+			
 			this.values.splice(index,1);
 			removeData(this.chart,index);
 		}
@@ -194,14 +204,16 @@ function removeData(chart,index) {
     });
     chart.update();
 }
-function ajax(text){
+function ajax(text,id){
 	var response;
+	if(id=='')id='113';
 	$.ajax({
 	    url : "https://api.hh.ru/vacancies",
 	    type : "GET",
 	    jsonp: "callback",
 	    async: false,
 	    data:{
+	    	'area':id,
 	    	'text':text,
 	    	'per_page':500,
 	    	'page':0,//first page is zero
@@ -215,6 +227,8 @@ function ajax(text){
 	});
 	response = JSON.parse(response,true);
     response = response['items'];
+    console.log('-------------------------------------');
+    console.log(response);
 	return response;
 }
 function getRegion(id){
