@@ -2,25 +2,26 @@
 <html>
 <head>
 	<title>test</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" type="text/css" href="1.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-<link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" type="text/css" href="../node_modules/vue-material/dist/vue-material.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+	<link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" type="text/css" href="../node_modules/vue-material/dist/vue-material.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap-grid.css">
 </head>
 <body>
 <div id="app">
-  
-<md-layout md-column md-align="center">
-  	<md-layout md-row><search  v-on:press="press"></search></md-layout>
-  	<md-layout md-row>
-  	<div v-if="searchField!==''">  
-  		<cards :values='values' v-on:del='del'></cards>
-  	</div>
-  	</md-layout md-row>
-  	<md-layout md-row>
-  		<canvas id="chart" width="400" height="400"></canvas>
-  	</md-layout md-row>
- </md-layout>
+  <div class="container">
+    <search  v-on:press="press"></search>
+    
+    <div v-if="searchField!==''">  
+    	<cards :values='values' v-on:del='del'></cards>
+    </div>
+    
+    <canvas id="chart" width="400" height="400"></canvas>
+   
+  </div>
 </div>
 <script src="bundle.js"></script>
 </body>

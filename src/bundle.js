@@ -51827,13 +51827,15 @@ var VueMaterial = __webpack_require__(730);
 Vue.use(VueMaterial);
 
 Vue.component('search', {
-	template: '<md-layout md-column>\n\t\t\t\t<md-layout md-row>\n\t\t\t\t\t<md-layout md-flex="80">\n\t\t\t\t\t\t<input v-model="searchField" type="text" name="">\n\t\t\t\t\t</md-layout>\n\t\t\t\t\t<md-layout md-flex="20">\n\t\t\t\t\t\t<div v-on:click=\'search\' class="btn waves-effect waves-light">search</div>\n\t\t\t\t\t</md-layout>\n\t\t\t\t</md-layout>\n\t\t\t\t<md-layout md-row>\n\n\t\t\t\t<form novalidate @submit.stop.prevent="submit">\n\t\t\t\t\t <md-input-container>\n\t\t\t\t\t \t<label>Choose a country</label>\n\t\t\t\t\t\t<md-autocomplete v-model="country" \n                    \t    :list="countryList"\n                    \t     print-attribute="name"\n                       \t\t:min-chars="0"\n                       \t\t:max-height="6"\n                       \t\t:filter-list="countryFilter"\n                       \t\t:debounce="500"\n                       \t\tv-on:selected="countryChange">\n   \t\t\t\t\t\t </md-autocomplete>\n   \t\t\t\t\t </md-input-container>\n   \t\t\t\t</form>\n   \t\t\t\t\n  \t\t\t\t</md-layout>\n  \t\t\t  </md-layout>',
+	template: '<div>\n\t\t\t\t<div class="row">\n\t\t\t\t\t<div class="col-md-10">\n\t\t\t\t\t\t<md-input-container>\n\t\t\t\t\t\t    <label>Search field</label>\n\t\t\t\t\t\t    <md-input v-model="searchField"></md-input>\n\t\t\t\t\t\t</md-input-container>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class="col-md-2">\n\t\t\t\t\t\t<md-button v-on:click=\'search\' class="md-primary md-raised">Primary</md-button>\n\t\t\t\t\t\t\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t\t<div class="row">\n\t\t\t\t\t<div class="col-md-6">\n\t\t\t\t\t\t<form novalidate @submit.stop.prevent="submit">\n\t\t\t\t\t\t\t <md-input-container>\n\t\t\t\t\t\t\t \t<label>Choose a country</label>\n\t\t\t\t\t\t\t\t<md-autocomplete v-model="country" \n                \t\t    \t    :list="countryList"\n                \t\t    \t     print-attribute="name"\n                \t\t       \t\t:min-chars="0"\n                \t\t       \t\t:max-height="6"\n                \t\t       \t\t:filter-list="filter"\n                \t\t       \t\t:debounce="500"\n                \t\t       \t\tv-on:selected="countryChange">\n   \t\t\t\t\t\t\t\t </md-autocomplete>\n   \t\t\t\t\t\t\t </md-input-container>\n   \t\t\t\t\t\t</form>\n   \t\t\t\t\t</div>\n   \t\t\t\t\t<div class="col-md-6">\n   \t\t\t\t\t\t<form  novalidate @submit.stop.prevent="submit">\n\t\t\t\t\t\t\t <md-input-container>\n\t\t\t\t\t\t\t \t<label>Choose a rewqdwqdwqdwqdqwdwqdwqdgion</label>\n\t\t\t\t\t\t\t\t<md-autocomplete v-model="region" \n                \t\t    \t    :list="regionsList"\n                \t\t    \t     print-attribute="name"\n                \t\t       \t\t:min-chars="0"\n                \t\t       \t\t:max-height="60"\n                \t\t       \t\t:maxlength="100"\n                \t\t       \t\t:filter-list="filter"\n                \t\t       \t\t:debounce="500"\n                \t\t       \t\tv-on:selected="regionChange">\n   \t\t\t\t\t\t\t\t </md-autocomplete>\n   \t\t\t\t\t\t\t </md-input-container>\n   \t\t\t\t\t\t</form>\n   \t\t\t\t\t</div>\n   \t\t\t\t</div>\n  \t\t\t  </div>',
 	data: function data() {
 		return {
 			movie: '',
 			searchField: '',
 			country: '',
-			countryList: []
+			region: '',
+			countryList: [],
+			regionsList: [{ 'name': "none" }]
 		};
 	},
 	mounted: function mounted() {
@@ -51847,10 +51849,11 @@ Vue.component('search', {
 			console.log(this.countryList);
 			this.getRegions(item['id']);
 		},
+		regionChange: function regionChange(item) {},
 		getRegions: function getRegions(id) {
-			getRegion(id);
+			this.regionsList = getRegion(id);
 		},
-		countryFilter: function countryFilter(list, query) {
+		filter: function filter(list, query) {
 			var arr = [];
 			for (var i = 0; i < list.length; i++) {
 				if (list[i].name.indexOf(query) !== -1) arr.push(list[i]);
@@ -51860,6 +51863,7 @@ Vue.component('search', {
 		},
 		search: function search() {
 			if (this.searchField !== '') {
+
 				this.$emit('press', this.searchField);
 				this.searchField = '';
 			}
@@ -51867,7 +51871,7 @@ Vue.component('search', {
 	}
 });
 Vue.component('cards', {
-	template: '\n\t\t<div>\n\t\t  <div v-for="(data,index) in values">\n\t\t        <div v-on:click=\'del(index)\' class="col s12 m6">\n\t\t          <div class="card blue-grey darken-1">\n\t\t            <div class="card-content white-text">\n\t\t              <span class="card-title">{{data[\'title\']}}</span>\n\t\t              \u0421\u0440\u0435\u0434\u043D\u044F\u044F \u0437\u0430\u0440\u043F\u043B\u0430\u0442\u0430: {{data[\'mid\']}}\u0420<br>\n\t\t              \u0412\u0441\u0435\u0433\u043E \u0432\u0430\u043A\u0430\u043D\u0441\u0438\u0439: {{data[\'countVacancies\']}}\n\t\t            </div>\n\t\t            <div class="card-action">\n\t\t              <a href="#">This is a link</a>\n\t\t              <a href="#">This is a link</a>\n\t\t            </div>\n\t\t          </div>\n\t\t        </div>\n\t\t  \t</div>\n\t\t  </div>\n\t',
+	template: '\n\t\t<div>\n\t\t\t\n\t\t  <div v-for="(data,index) in values">\n\t\t        <div v-on:click=\'del(index)\' class="col s12 m6">\n\t\t          <md-card class="md-primary">\n\t\t\t\n\t\t\t  <md-card-header>\n\t\t\t    <div class="md-title">{{data[\'title\']}}</div>\n\t\t\t    <div class="md-subhead">Subtitle here</div>\n\t\t\t  </md-card-header>\n\t\t\t\n\t\t\t  <md-card-actions>\n\t\t\t    <md-button>Action</md-button>\n\t\t\t    <md-button>Action</md-button>\n\t\t\t  </md-card-actions>\n\t\t\t\n\t\t\t  <md-card-content>\n\t\t\t  \u0421\u0440\u0435\u0434\u043D\u044F\u044F \u0437\u0430\u0440\u043F\u043B\u0430\u0442\u0430: {{data[\'mid\']}}\u0420<br>\n\t\t      \u0412\u0441\u0435\u0433\u043E \u0432\u0430\u043A\u0430\u043D\u0441\u0438\u0439: {{data[\'countVacancies\']}}\n\t\t\t  </md-card-content>\n\t\t\t</md-card>\n\t\t        </div>\n\t\t  \t</div>\n\t\t  </div>\n\t',
 	props: ['values'],
 	methods: {
 		del: function del(index) {

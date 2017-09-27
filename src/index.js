@@ -11,40 +11,64 @@ var VueMaterial = require('vue-material');
 Vue.use(VueMaterial);
 
 Vue.component('search',{
-	template:`<md-layout md-column>
-				<md-layout md-row>
-					<md-layout md-flex="80">
-						<input v-model="searchField" type="text" name="">
-					</md-layout>
-					<md-layout md-flex="20">
-						<div v-on:click='search' class="btn waves-effect waves-light">search</div>
-					</md-layout>
-				</md-layout>
-				<md-layout md-row>
-
-				<form novalidate @submit.stop.prevent="submit">
-					 <md-input-container>
-					 	<label>Choose a country</label>
-						<md-autocomplete v-model="country" 
-                    	    :list="countryList"
-                    	     print-attribute="name"
-                       		:min-chars="0"
-                       		:max-height="6"
-                       		:filter-list="countryFilter"
-                       		:debounce="500"
-                       		v-on:selected="countryChange">
-   						 </md-autocomplete>
-   					 </md-input-container>
-   				</form>
-   				
-  				</md-layout>
-  			  </md-layout>`,
+	template:`<div>
+				<div class="row">
+					<div class="col-md-10">
+						<md-input-container>
+						    <label>Search field</label>
+						    <md-input v-model="searchField"></md-input>
+						</md-input-container>
+					</div>
+					<div class="col-md-2">
+						<md-button v-on:click='search' class="md-primary md-raised">Primary</md-button>
+						
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-6">
+						<form novalidate @submit.stop.prevent="submit">
+							 <md-input-container>
+							 	<label>Choose a country</label>
+								<md-autocomplete v-model="country" 
+                		    	    :list="countryList"
+                		    	     print-attribute="name"
+                		       		:min-chars="0"
+                		       		:max-height="6"
+                		       		:filter-list="filter"
+                		       		:debounce="500"
+                		       		v-on:selected="countryChange">
+   								 </md-autocomplete>
+   							 </md-input-container>
+   						</form>
+   					</div>
+   					<div class="col-md-6">
+   						<form  novalidate @submit.stop.prevent="submit">
+							 <md-input-container>
+							 	<label>Choose a rewqdwqdwqdwqdqwdwqdwqdgion</label>
+								<md-autocomplete v-model="region" 
+                		    	    :list="regionsList"
+                		    	     print-attribute="name"
+                		       		:min-chars="0"
+                		       		:max-height="60"
+                		       		:maxlength="100"
+                		       		:filter-list="filter"
+                		       		:debounce="500"
+                		       		v-on:selected="regionChange">
+   								 </md-autocomplete>
+   							 </md-input-container>
+   						</form>
+   					</div>
+   				</div>
+  			  </div>`,
   	data:function(){
   		return{
   			movie:'',
   			searchField:'',
   			country:'',
-  			countryList:[]
+  			region:'',
+  			countryList:[],
+  			regionsList:[{'name':"none"}]
   		}
   	},
   	mounted:function(){
@@ -58,10 +82,13 @@ Vue.component('search',{
   			console.log(this.countryList);
   			this.getRegions(item['id']);
   		},
-  		getRegions:function(id){
-  			getRegion(id);
+  		regionChange:function(item){
+
   		},
-  		countryFilter: function(list, query) {
+  		getRegions:function(id){
+  			this.regionsList = getRegion(id);
+  		},
+  		filter:function(list, query) {
     		var arr = [];
     		for (var i = 0; i < list.length; i++) {
     		    if (list[i].name.indexOf(query) !== -1)
@@ -73,6 +100,9 @@ Vue.component('search',{
 		},
   		search:function(){
   			if(this.searchField!==''){
+  				if(this.country!==''){
+  					
+  				}
   				this.$emit('press',this.searchField);
   				this.searchField = '';
   			}
@@ -83,19 +113,26 @@ Vue.component('search',{
 Vue.component('cards',{
 	template:`
 		<div>
+			
 		  <div v-for="(data,index) in values">
 		        <div v-on:click='del(index)' class="col s12 m6">
-		          <div class="card blue-grey darken-1">
-		            <div class="card-content white-text">
-		              <span class="card-title">{{data['title']}}</span>
-		              Средняя зарплата: {{data['mid']}}Р<br>
-		              Всего вакансий: {{data['countVacancies']}}
-		            </div>
-		            <div class="card-action">
-		              <a href="#">This is a link</a>
-		              <a href="#">This is a link</a>
-		            </div>
-		          </div>
+		          <md-card class="md-primary">
+			
+			  <md-card-header>
+			    <div class="md-title">{{data['title']}}</div>
+			    <div class="md-subhead">Subtitle here</div>
+			  </md-card-header>
+			
+			  <md-card-actions>
+			    <md-button>Action</md-button>
+			    <md-button>Action</md-button>
+			  </md-card-actions>
+			
+			  <md-card-content>
+			  Средняя зарплата: {{data['mid']}}Р<br>
+		      Всего вакансий: {{data['countVacancies']}}
+			  </md-card-content>
+			</md-card>
 		        </div>
 		  	</div>
 		  </div>
