@@ -10,6 +10,7 @@
 <body>
 <div id="app">
   <div class="container">
+  	
   	<search  v-on:press="press"></search>
   	<div v-if="searchField!==''">  
   		<cards :values='values' v-on:del='del'></cards>

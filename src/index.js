@@ -21,10 +21,21 @@ Vue.component('search',{
 					</div>
 				</div>
 				<div class="row">
-					<md-autocomplete v-model="country" 
-                        :list="countryList"
-                        >
-   					 </md-autocomplete>
+				<form novalidate @submit.stop.prevent="submit">
+					 <md-input-container>
+					 	<label>Choose a country</label>
+						<md-autocomplete v-model="country" 
+                    	    :list="countryList"
+                    	     print-attribute="name"
+                       		
+                       		:min-chars="0"
+                       		:max-height="6"
+                       		:filter-list="colorFilter"
+                       		:debounce="500">
+                    	    >
+   						 </md-autocomplete>
+   					 </md-input-container>
+   					 </form>
   				</div>
   			  </div>`,
   	data:function(){
@@ -32,13 +43,26 @@ Vue.component('search',{
   			movie:'',
   			searchField:'',
   			country:'',
-  			countryList:''
+  			countryList:[]
   		}
   	},
   	mounted:function(){
-  		getRegions();
+  		this.countryList = getRegions();
   	},
   	methods:{
+  		colorFilter: function(list, query) {
+      var arr = [];
+          
+      for(var i = 0; i < list.length; i++) {
+        if(list[i].name.indexOf(query) !== -1)
+          arr.push(list[i]);
+          
+        if(arr.length > 5)
+          break;
+      }
+          
+      return arr;
+    },
   		selected:function(){
   			console.log('w');
   			console.log(this.country);
@@ -169,8 +193,14 @@ function getRegions(){
 	});
 	response = JSON.parse(response,true);
 	console.log(response);
+	var array = [];
+	response.forEach(function(item,i,arr){
+		//console.log(item);
+		array.push({name:item['name']});
+	});
     //response = response['items'];
-	return response;
+    console.log(array);
+	return array;
 }
 function treatment(response,title){
 	var sum = 0;
