@@ -9,16 +9,18 @@
 </head>
 <body>
 <div id="app">
-  <div class="container">
-  	
-  	<search  v-on:press="press"></search>
+  
+<md-layout md-column md-align="center">
+  	<md-layout md-row><search  v-on:press="press"></search></md-layout>
+  	<md-layout md-row>
   	<div v-if="searchField!==''">  
   		<cards :values='values' v-on:del='del'></cards>
   	</div>
-  	<div class="row">
+  	</md-layout md-row>
+  	<md-layout md-row>
   		<canvas id="chart" width="400" height="400"></canvas>
-  	</div>
-  </div>
+  	</md-layout md-row>
+ </md-layout>
 </div>
 <script src="bundle.js"></script>
 </body>

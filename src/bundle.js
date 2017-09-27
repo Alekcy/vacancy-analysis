@@ -51827,7 +51827,7 @@ var VueMaterial = __webpack_require__(730);
 Vue.use(VueMaterial);
 
 Vue.component('search', {
-	template: '<div>\n\t\t\t\t<div class="row">\n\t\t\t\t\t<div class="col s10">\n\t\t\t\t\t\t<input v-model="searchField" type="text" name="">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class="col s2">\n\t\t\t\t\t\t<div v-on:click=\'search\' class="btn waves-effect waves-light">search</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class="row">\n\t\t\t\t<form novalidate @submit.stop.prevent="submit">\n\t\t\t\t\t <md-input-container>\n\t\t\t\t\t \t<label>Choose a country</label>\n\t\t\t\t\t\t<md-autocomplete v-model="country" \n                    \t    :list="countryList"\n                    \t     print-attribute="name"\n                       \t\t\n                       \t\t:min-chars="0"\n                       \t\t:max-height="6"\n                       \t\t:filter-list="colorFilter"\n                       \t\t:debounce="500">\n                    \t    >\n   \t\t\t\t\t\t </md-autocomplete>\n   \t\t\t\t\t </md-input-container>\n   \t\t\t\t\t </form>\n  \t\t\t\t</div>\n  \t\t\t  </div>',
+	template: '<md-layout md-column>\n\t\t\t\t<md-layout md-row>\n\t\t\t\t\t<md-layout md-flex="80">\n\t\t\t\t\t\t<input v-model="searchField" type="text" name="">\n\t\t\t\t\t</md-layout>\n\t\t\t\t\t<md-layout md-flex="20">\n\t\t\t\t\t\t<div v-on:click=\'search\' class="btn waves-effect waves-light">search</div>\n\t\t\t\t\t</md-layout>\n\t\t\t\t</md-layout>\n\t\t\t\t<md-layout md-row>\n\t\t\t\t<form novalidate @submit.stop.prevent="submit">\n\t\t\t\t\t <md-input-container>\n\t\t\t\t\t \t<label>Choose a country</label>\n\t\t\t\t\t\t<md-autocomplete v-model="country" \n                    \t    :list="countryList"\n                    \t     print-attribute="name"\n                       \t\t:min-chars="0"\n                       \t\t:max-height="6"\n                       \t\t:filter-list="countryFilter"\n                       \t\t:debounce="500"\n                       \t\tv-on:selected="countryChange">\n   \t\t\t\t\t\t </md-autocomplete>\n   \t\t\t\t\t </md-input-container>\n   \t\t\t\t</form>\n  \t\t\t\t</md-layout>\n  \t\t\t  </md-layout>',
 	data: function data() {
 		return {
 			movie: '',
@@ -51840,20 +51840,20 @@ Vue.component('search', {
 		this.countryList = getRegions();
 	},
 	methods: {
-		colorFilter: function colorFilter(list, query) {
-			var arr = [];
+		countryChange: function countryChange(item) {
+			console.log(item);
 
+			console.log('ind: ' + item['id']);
+			console.log(this.countryList);
+		},
+		getRegions: function getRegions() {},
+		countryFilter: function countryFilter(list, query) {
+			var arr = [];
 			for (var i = 0; i < list.length; i++) {
 				if (list[i].name.indexOf(query) !== -1) arr.push(list[i]);
-
 				if (arr.length > 5) break;
 			}
-
 			return arr;
-		},
-		selected: function selected() {
-			console.log('w');
-			console.log(this.country);
 		},
 		search: function search() {
 			if (this.searchField !== '') {
@@ -51962,7 +51962,7 @@ function getRegions() {
 	var array = [];
 	response.forEach(function (item, i, arr) {
 		//console.log(item);
-		array.push({ name: item['name'] });
+		array.push({ 'id': item['id'], 'name': item['name'] });
 	});
 	//response = response['items'];
 	console.log(array);

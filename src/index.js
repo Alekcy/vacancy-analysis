@@ -11,33 +11,46 @@ var VueMaterial = require('vue-material');
 Vue.use(VueMaterial);
 
 Vue.component('search',{
-	template:`<div>
-				<div class="row">
-					<div class="col s10">
+	template:`<md-layout md-column>
+				<md-layout md-row>
+					<md-layout md-flex="80">
 						<input v-model="searchField" type="text" name="">
-					</div>
-					<div class="col s2">
+					</md-layout>
+					<md-layout md-flex="20">
 						<div v-on:click='search' class="btn waves-effect waves-light">search</div>
-					</div>
-				</div>
-				<div class="row">
+					</md-layout>
+				</md-layout>
+				<md-layout md-row>
 				<form novalidate @submit.stop.prevent="submit">
 					 <md-input-container>
 					 	<label>Choose a country</label>
 						<md-autocomplete v-model="country" 
                     	    :list="countryList"
                     	     print-attribute="name"
-                       		
                        		:min-chars="0"
                        		:max-height="6"
-                       		:filter-list="colorFilter"
-                       		:debounce="500">
-                    	    >
+                       		:filter-list="countryFilter"
+                       		:debounce="500"
+                       		v-on:selected="countryChange">
    						 </md-autocomplete>
    					 </md-input-container>
-   					 </form>
-  				</div>
-  			  </div>`,
+   				</form>
+   				<form novalidate @submit.stop.prevent="submit">
+					 <md-input-container>
+					 	<label>Choose a country</label>
+						<md-autocomplete v-model="country" 
+                    	    :list="countryList"
+                    	     print-attribute="name"
+                       		:min-chars="0"
+                       		:max-height="6"
+                       		:filter-list="countryFilter"
+                       		:debounce="500"
+                       		v-on:selected="countryChange">
+   						 </md-autocomplete>
+   					 </md-input-container>
+   				</form>
+  				</md-layout>
+  			  </md-layout>`,
   	data:function(){
   		return{
   			movie:'',
@@ -50,23 +63,25 @@ Vue.component('search',{
   		this.countryList = getRegions();
   	},
   	methods:{
-  		colorFilter: function(list, query) {
-      var arr = [];
-          
-      for(var i = 0; i < list.length; i++) {
-        if(list[i].name.indexOf(query) !== -1)
-          arr.push(list[i]);
-          
-        if(arr.length > 5)
-          break;
-      }
-          
-      return arr;
-    },
-  		selected:function(){
-  			console.log('w');
-  			console.log(this.country);
+  		countryChange:function(item){
+  			console.log(item);
+  			
+  			console.log('ind: '+item['id']);
+  			console.log(this.countryList);
   		},
+  		getRegions:function(){
+
+  		},
+  		countryFilter: function(list, query) {
+    		var arr = [];
+    		for (var i = 0; i < list.length; i++) {
+    		    if (list[i].name.indexOf(query) !== -1)
+    		        arr.push(list[i]);
+    		    if (arr.length > 5)
+    		        break;
+    		}
+			return arr;
+		},
   		search:function(){
   			if(this.searchField!==''){
   				this.$emit('press',this.searchField);
@@ -196,7 +211,7 @@ function getRegions(){
 	var array = [];
 	response.forEach(function(item,i,arr){
 		//console.log(item);
-		array.push({name:item['name']});
+		array.push({'id':item['id'],'name':item['name']});
 	});
     //response = response['items'];
     console.log(array);
