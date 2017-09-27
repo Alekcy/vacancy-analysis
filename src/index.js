@@ -21,6 +21,7 @@ Vue.component('search',{
 					</md-layout>
 				</md-layout>
 				<md-layout md-row>
+
 				<form novalidate @submit.stop.prevent="submit">
 					 <md-input-container>
 					 	<label>Choose a country</label>
@@ -35,20 +36,7 @@ Vue.component('search',{
    						 </md-autocomplete>
    					 </md-input-container>
    				</form>
-   				<form novalidate @submit.stop.prevent="submit">
-					 <md-input-container>
-					 	<label>Choose a country</label>
-						<md-autocomplete v-model="country" 
-                    	    :list="countryList"
-                    	     print-attribute="name"
-                       		:min-chars="0"
-                       		:max-height="6"
-                       		:filter-list="countryFilter"
-                       		:debounce="500"
-                       		v-on:selected="countryChange">
-   						 </md-autocomplete>
-   					 </md-input-container>
-   				</form>
+   				
   				</md-layout>
   			  </md-layout>`,
   	data:function(){
@@ -60,7 +48,7 @@ Vue.component('search',{
   		}
   	},
   	mounted:function(){
-  		this.countryList = getRegions();
+  		this.countryList = getCountry();
   	},
   	methods:{
   		countryChange:function(item){
@@ -68,9 +56,10 @@ Vue.component('search',{
   			
   			console.log('ind: '+item['id']);
   			console.log(this.countryList);
+  			this.getRegions(item['id']);
   		},
-  		getRegions:function(){
-
+  		getRegions:function(id){
+  			getRegion(id);
   		},
   		countryFilter: function(list, query) {
     		var arr = [];
@@ -191,7 +180,32 @@ function ajax(text){
     response = response['items'];
 	return response;
 }
-function getRegions(){
+function getRegion(id){
+	var response;
+	$.ajax({
+	    url : "https://api.hh.ru/areas/"+id,
+	    type : "GET",
+	    jsonp: "callback",
+	    async: false,
+	    data:{
+	    },
+	    dataType : "text",
+	    success : function(data){
+	        response=data;
+	    }	
+	});
+	response = JSON.parse(response,true);
+	console.log(response);
+	var array = [];
+	response['areas'].forEach(function(item,i,arr){
+		//console.log(item);
+		array.push({'id':item['id'],'name':item['name']});
+	});
+    //response = response['items'];
+    console.log(array);
+	return array;
+}
+function getCountry(){
 
 	var response;
 	$.ajax({

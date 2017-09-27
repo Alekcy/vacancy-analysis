@@ -51827,7 +51827,7 @@ var VueMaterial = __webpack_require__(730);
 Vue.use(VueMaterial);
 
 Vue.component('search', {
-	template: '<md-layout md-column>\n\t\t\t\t<md-layout md-row>\n\t\t\t\t\t<md-layout md-flex="80">\n\t\t\t\t\t\t<input v-model="searchField" type="text" name="">\n\t\t\t\t\t</md-layout>\n\t\t\t\t\t<md-layout md-flex="20">\n\t\t\t\t\t\t<div v-on:click=\'search\' class="btn waves-effect waves-light">search</div>\n\t\t\t\t\t</md-layout>\n\t\t\t\t</md-layout>\n\t\t\t\t<md-layout md-row>\n\t\t\t\t<form novalidate @submit.stop.prevent="submit">\n\t\t\t\t\t <md-input-container>\n\t\t\t\t\t \t<label>Choose a country</label>\n\t\t\t\t\t\t<md-autocomplete v-model="country" \n                    \t    :list="countryList"\n                    \t     print-attribute="name"\n                       \t\t:min-chars="0"\n                       \t\t:max-height="6"\n                       \t\t:filter-list="countryFilter"\n                       \t\t:debounce="500"\n                       \t\tv-on:selected="countryChange">\n   \t\t\t\t\t\t </md-autocomplete>\n   \t\t\t\t\t </md-input-container>\n   \t\t\t\t</form>\n  \t\t\t\t</md-layout>\n  \t\t\t  </md-layout>',
+	template: '<md-layout md-column>\n\t\t\t\t<md-layout md-row>\n\t\t\t\t\t<md-layout md-flex="80">\n\t\t\t\t\t\t<input v-model="searchField" type="text" name="">\n\t\t\t\t\t</md-layout>\n\t\t\t\t\t<md-layout md-flex="20">\n\t\t\t\t\t\t<div v-on:click=\'search\' class="btn waves-effect waves-light">search</div>\n\t\t\t\t\t</md-layout>\n\t\t\t\t</md-layout>\n\t\t\t\t<md-layout md-row>\n\n\t\t\t\t<form novalidate @submit.stop.prevent="submit">\n\t\t\t\t\t <md-input-container>\n\t\t\t\t\t \t<label>Choose a country</label>\n\t\t\t\t\t\t<md-autocomplete v-model="country" \n                    \t    :list="countryList"\n                    \t     print-attribute="name"\n                       \t\t:min-chars="0"\n                       \t\t:max-height="6"\n                       \t\t:filter-list="countryFilter"\n                       \t\t:debounce="500"\n                       \t\tv-on:selected="countryChange">\n   \t\t\t\t\t\t </md-autocomplete>\n   \t\t\t\t\t </md-input-container>\n   \t\t\t\t</form>\n   \t\t\t\t\n  \t\t\t\t</md-layout>\n  \t\t\t  </md-layout>',
 	data: function data() {
 		return {
 			movie: '',
@@ -51837,7 +51837,7 @@ Vue.component('search', {
 		};
 	},
 	mounted: function mounted() {
-		this.countryList = getRegions();
+		this.countryList = getCountry();
 	},
 	methods: {
 		countryChange: function countryChange(item) {
@@ -51845,8 +51845,11 @@ Vue.component('search', {
 
 			console.log('ind: ' + item['id']);
 			console.log(this.countryList);
+			this.getRegions(item['id']);
 		},
-		getRegions: function getRegions() {},
+		getRegions: function getRegions(id) {
+			getRegion(id);
+		},
 		countryFilter: function countryFilter(list, query) {
 			var arr = [];
 			for (var i = 0; i < list.length; i++) {
@@ -51943,7 +51946,31 @@ function ajax(text) {
 	response = response['items'];
 	return response;
 }
-function getRegions() {
+function getRegion(id) {
+	var response;
+	$.ajax({
+		url: "https://api.hh.ru/areas/" + id,
+		type: "GET",
+		jsonp: "callback",
+		async: false,
+		data: {},
+		dataType: "text",
+		success: function success(data) {
+			response = data;
+		}
+	});
+	response = JSON.parse(response, true);
+	console.log(response);
+	var array = [];
+	response['areas'].forEach(function (item, i, arr) {
+		//console.log(item);
+		array.push({ 'id': item['id'], 'name': item['name'] });
+	});
+	//response = response['items'];
+	console.log(array);
+	return array;
+}
+function getCountry() {
 
 	var response;
 	$.ajax({
