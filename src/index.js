@@ -4,22 +4,50 @@ import materializecss from 'materialize-css';
 import mathjs from 'mathjs';
 import Chart from 'chart.js';
 
-$( document ).ready(function() {
-    console.log( "ready!" );
-});
+
+
 var Vue = require('vue');
+var VueMaterial = require('vue-material');
+Vue.use(VueMaterial);
+
 Vue.component('search',{
-	template:`<div><input v-model="searchField" type="text" name="">
-  				<div v-on:click='search' class="btn waves-effect waves-light">search</div></div>`,
+	template:`<div>
+				<div class="row">
+					<div class="col s10">
+						<input v-model="searchField" type="text" name="">
+					</div>
+					<div class="col s2">
+						<div v-on:click='search' class="btn waves-effect waves-light">search</div>
+					</div>
+				</div>
+				<div class="row">
+					<md-autocomplete v-model="country" 
+                        :list="countryList"
+                        >
+   					 </md-autocomplete>
+  				</div>
+  			  </div>`,
   	data:function(){
   		return{
-  			searchField:''
+  			movie:'',
+  			searchField:'',
+  			country:'',
+  			countryList:''
   		}
   	},
+  	mounted:function(){
+  		getRegions();
+  	},
   	methods:{
+  		selected:function(){
+  			console.log('w');
+  			console.log(this.country);
+  		},
   		search:function(){
-  			this.$emit('press',this.searchField);
-  			this.searchField = '';
+  			if(this.searchField!==''){
+  				this.$emit('press',this.searchField);
+  				this.searchField = '';
+  			}
   			
   		}
   	}
@@ -47,18 +75,10 @@ Vue.component('cards',{
 	props:[
 		'values'
 	],
-	data:function(){
-		return{
-			'render':false
-			
-		}
-	},
-	mounted:function(){
-		
-		//this.$emit('addValue')
-	},
 	methods:{
-
+		del:function(index){
+			this.$emit('del',index);
+		}
 	}
 });
 var app = new Vue ({
@@ -71,39 +91,26 @@ var app = new Vue ({
 	},
 	mounted:function(){
 			console.log('created');
-			//chart();
 			this.chart = chart();
-			console.log(this.chart);
-			
-			
+			console.log(this.chart);	
 	},
 	methods:{
 		addValue:function(){
 			console.log('sf'+this.searchField);
 			var response = ajax(this.searchField);
 			var data = treatment(response,this.searchField);
-					//k.push({'title':this.searchField});
 			this.values.push(data);
 			console.log(this.values);
-			//console.log(data);
-			//console.log(this.chart);
-			//if(this.chart==null){
-			//	this.chart = chart();
-			//}
 			updateChart(this.chart,data['title'],data['mid']);
 		},
 		press:function(val){
-
-			console.log(this.chart);
-			//this.chart = chart();
 			this.searchField = val;
 			this.addValue();
-			
 		},
 		del:function(index){
-				console.log(index);
-				this.values.splice(index,1);
-				removeData(this.chart,index);
+			console.log(index);
+			this.values.splice(index,1);
+			removeData(this.chart,index);
 		}
 	}
 });
@@ -143,6 +150,26 @@ function ajax(text){
 	});
 	response = JSON.parse(response,true);
     response = response['items'];
+	return response;
+}
+function getRegions(){
+
+	var response;
+	$.ajax({
+	    url : "https://api.hh.ru/areas/countries",
+	    type : "GET",
+	    jsonp: "callback",
+	    async: false,
+	    data:{
+	    },
+	    dataType : "text",
+	    success : function(data){
+	        response=data;
+	    }	
+	});
+	response = JSON.parse(response,true);
+	console.log(response);
+    //response = response['items'];
 	return response;
 }
 function treatment(response,title){
