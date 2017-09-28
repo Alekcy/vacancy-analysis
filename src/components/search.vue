@@ -9,10 +9,8 @@
           </div>
           <div class="col-md-2">
             <md-button v-on:click='search' class="md-primary md-raised">Primary</md-button>
-            
           </div>
         </div>
-        
         <div class="row">
           <div class="col-md-6">
             <form novalidate @submit.stop.prevent="submit">
@@ -33,8 +31,9 @@
             <div class="col-md-6">
               <form  novalidate @submit.stop.prevent="submit">
                <md-input-container>
-                <label>Choose a rewqdwqdwqdwqdqwdwqdwqdgion</label>
-                <md-autocomplete v-model="region" 
+                <label>Choose a region</label>
+                <md-autocomplete  v-model="region" 
+                              :disabled="dis"
                               :list="regionsList"
                                print-attribute="name"
                               :min-chars="0"
@@ -43,8 +42,8 @@
                               :filter-list="filter"
                               :debounce="500"
                               v-on:selected="regionChange">
-                   </md-autocomplete>
-                 </md-input-container>
+                </md-autocomplete>
+                </md-input-container>
               </form>
             </div>
           </div>
@@ -56,10 +55,12 @@
   export default{
     data:function(){
       return{
+        dis:true,
         movie:'',
         searchField:'',
         country:'',
         region:'',
+        regionName:'',
         countryList:[],
         idRegion:'',
         regionsList:[{'name':"none"}]
@@ -71,13 +72,16 @@
     methods:{
       countryChange:function(item){
         console.log(item);
-        
         console.log('ind: '+item['id']);
         console.log(this.countryList);
+        this.dis = false;
         this.idRegion = item['id'];
+        this.regionName = item['name'];
         this.getRegions(item['id']);
       },
       regionChange:function(item){
+        this.idRegion = item['id'];
+         this.regionName = item['name'];
 
       },
       getRegions:function(id){
@@ -91,21 +95,23 @@
             if (arr.length > 5)
                 break;
         }
-      return arr;
-    },
+        return arr;
+      },
       search:function(){
         var searchParams = [];
         if(this.searchField!==''){
           if(this.country!==''){
-            searchParams = {'searchField':this.searchField,'idRegion':this.idRegion};
+            searchParams = {'searchField':this.searchField,'idRegion':this.idRegion,'regionName':this.regionName};
           }else{
-            searchParams = {'searchField':this.searchField,'idRegion':''};
+            searchParams = {'searchField':this.searchField,'idRegion':'','regionName':''};
           }
           console.log(searchParams);
           this.$emit('press',searchParams);
           this.searchField = '';
+          this.dis = true;
+          this.region = '';
+          this.country = '';
         }
-        
       }
     }
   }

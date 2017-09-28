@@ -13,7 +13,7 @@ class Main{
 	    });
 	    chart.update();
 	}
-	 ajax(text,id){
+	ajax(text,id){
 		var response;
 		if(id=='')id='113';
 		$.ajax({
@@ -40,7 +40,7 @@ class Main{
 	    console.log(response);
 		return response;
 	}
-	 getRegion(id){
+	getRegion(id){
 		var response;
 		$.ajax({
 		    url : "https://api.hh.ru/areas/"+id,
@@ -65,7 +65,7 @@ class Main{
 	    console.log(array);
 		return array;
 	}
-	 getCountry(){
+	getCountry(){
 	
 		var response;
 		$.ajax({
@@ -91,7 +91,7 @@ class Main{
 	    console.log(array);
 		return array;
 	}
-	 treatment(response,title){
+	treatment(response,title,regionName){
 		var sum = 0;
 	    var countVacanciesWithSalaryFrom = 0;
 	    var salaryArray=[];
@@ -110,11 +110,12 @@ class Main{
 		var data = {
 			'mid':mid,
 			'countVacancies':countVacanciesWithSalaryFrom,
-			'title':title
+			'title':title,
+			'regionName':regionName
 		};
 		return data;
 	}
-	 chart(){
+	chart(){
 		var chart = new Chart('chart', {
 	    	type: 'bar',
 	    	data: {
@@ -154,7 +155,5 @@ class Main{
 		});
 		return chart;
 	}
-
-
 }
 module.exports = Main;

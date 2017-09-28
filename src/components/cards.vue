@@ -1,22 +1,21 @@
 <template>
 	<div>
 		  <div v-for="(data,index) in values">
-		        <div v-on:click='del(index)' class="col s12 m6">
+		        <div  class="col s12 m6">
 		          <md-card class="md-primary">
 			
 			  <md-card-header>
 			    <div class="md-title">{{data['title']}}</div>
-			    <div class="md-subhead">Subtitle here</div>
+			    <div class="md-subhead">{{data['regionName']}}</div>
 			  </md-card-header>
 			
 			  <md-card-actions>
-			    <md-button>Action</md-button>
-			    <md-button>Action</md-button>
+			    <md-button v-on:click='del(index)'>Remove</md-button>
 			  </md-card-actions>
 			
 			  <md-card-content>
 			  Средняя зарплата: {{data['mid']}}Р<br>
-		      Всего вакансий: {{data['countVacancies']}}
+		      Всего вакансий с указанной зарплатой: {{data['countVacancies']}}
 			  </md-card-content>
 			</md-card>
 		        </div>
