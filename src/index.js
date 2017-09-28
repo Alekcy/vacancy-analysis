@@ -21,7 +21,8 @@ var app = new Vue ({
 		values:[],
 		chart:null,
 		idRegion:'',
-		regionName:''
+		regionName:'',
+		searchParams:[]
 	},
 	mounted:function(){
 			console.log('created');
@@ -34,17 +35,18 @@ var app = new Vue ({
 	},
 	methods:{
 		addValue:function(){
-			var response = main.ajax(this.searchField,this.idRegion);
-			var data = main.treatment(response,this.searchField,this.regionName);
+			console.log(this.searchParams);
+			var response = main.ajax(this.searchParams);
+			var data = main.treatment(response,this.searchParams['searchField']);
 			this.values.push(data);
 			main.updateChart(this.chart,data['title'],data['mid']);
 		},
 		press:function(searchParams){
 			this.searchField = searchParams['searchField'];
-			if(searchParams['idRegion']!==''){
-				this.idRegion = searchParams['idRegion'];
-				this.regionName = searchParams['regionName'];
-			}
+			
+			this.idRegion = searchParams['regions'][0]['idRegion'];
+			//this.regionName = ['regionName'];
+			this.searchParams = searchParams;
 			this.addValue();
 			this.isHide = false;
 		},

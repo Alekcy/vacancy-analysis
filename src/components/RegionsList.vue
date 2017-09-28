@@ -1,7 +1,7 @@
 <template>
 	<div>
 	<div v-for="(data,index) in regions" >
-		<div>{{data}}</div>
+		<div>{{data['regionName']}}</div>
 	</div>
 	</div>
 </template>

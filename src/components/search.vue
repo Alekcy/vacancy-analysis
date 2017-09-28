@@ -50,7 +50,7 @@
             </md-input-container>
           </div>
           <div class="col-md-2">
-            <md-button disabled v-on:click='search' class="md-primary md-raised">Поиск</md-button>
+            <md-button :disabled="disSearch" v-on:click='search' class="md-primary md-raised">Поиск</md-button>
           </div>
         </div>
     </div>
@@ -62,6 +62,7 @@
   export default{
     data:function(){
       return{
+        disSearch:true,
         disAddReg:true,
         dis:true,
         movie:'',
@@ -83,7 +84,8 @@
     },
     methods:{
       addReg:function(){
-        this.regions.push(this.regionName);
+        this.regions.push({'regionName':this.regionName,'idRegion':this.idRegion});
+        this.disSearch = false;
       },
       countryChange:function(item){
         console.log(item);
@@ -116,11 +118,9 @@
       search:function(){
         var searchParams = [];
         if(this.searchField!==''){
-          if(this.country!==''){
-            searchParams = {'searchField':this.searchField,'idRegion':this.idRegion,'regionName':this.regionName};
-          }else{
-            searchParams = {'searchField':this.searchField,'idRegion':'','regionName':''};
-          }
+          
+          searchParams = {'searchField':this.searchField,'regions':this.regions};
+        
           console.log(searchParams);
           this.$emit('press',searchParams);
           this.searchField = '';

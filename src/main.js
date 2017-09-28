@@ -34,29 +34,34 @@ class Main{
 	    });
 	    chart.update();
 	}
-	ajax(text,id){
-		var response;
-		if(id=='')id='113';
-		$.ajax({
-		    url : "https://api.hh.ru/vacancies",
-		    type : "GET",
-		    jsonp: "callback",
-		    async: false,
-		    data:{
-		    	'area':id,
-		    	'text':text,
-		    	'per_page':500,
-		    	'page':0,//first page is zero
-		    	'only_with_salary':true
-		    },
-		    dataType : "text",
-		    success : function(data){
-		        
-		        response=data;
-		    }	
+	ajax(params){
+		var response=[];
+		params['regions'].forEach(function(item,i,arr){
+			var dat;
+			$.ajax({
+		    	url : "https://api.hh.ru/vacancies",
+		    	type : "GET",
+		    	jsonp: "callback",
+		    	async: false,
+		    	data:{
+		    		'area':item['idRegion'],
+		    		'text':params['searchField'],
+		    		'per_page':500,
+		    		'page':0,//first page is zero
+		    		'only_with_salary':true
+		    	},
+		    	dataType : "text",
+		    	success : function(data){
+		    	    
+		    	    dat=data;
+		    	}	
+			});
+			dat = JSON.parse(dat,true);
+	    	dat = dat['items'];
+	    	response.push(dat);
 		});
-		response = JSON.parse(response,true);
-	    response = response['items'];
+		
+		
 	    console.log('-------------------------------------');
 	    console.log(response);
 		return response;
@@ -112,28 +117,31 @@ class Main{
 	    console.log(array);
 		return array;
 	}
-	treatment(response,title,regionName){
-		var sum = 0;
-	    var countVacanciesWithSalaryFrom = 0;
-	    var salaryArray=[];
-		response.forEach(function(item, i, vacancie) {
-		  	if(vacancie[i]['salary']['from']!==null){
-		  		sum += vacancie[i]['salary']['from'];
-		  		countVacanciesWithSalaryFrom++;
-		  		salaryArray.push(vacancie[i]['salary']['from']);
-		  	}
+	treatment(response,title){
+		var data = [];
+		response.forEach(function(item, i, arr) {
+			var sum = 0;
+	    	var countVacanciesWithSalaryFrom = 0;
+	    	var salaryArray=[];
+			item.forEach(function(item, i, vacancie) {
+			  	if(vacancie[i]['salary']['from']!==null){
+			  		sum += vacancie[i]['salary']['from'];
+			  		countVacanciesWithSalaryFrom++;
+			  		salaryArray.push(vacancie[i]['salary']['from']);
+			  	}
+			});
+			var mid = sum/countVacanciesWithSalaryFrom;
+			console.log(mid);
+			mid = Math.round(mid);
+			//var math = require('mathjs');
+			//console.log(math.median(salaryArray));
+			data.push({
+				'mid':mid,
+				'countVacancies':countVacanciesWithSalaryFrom,
+				'title':title
+			});
 		});
-		var mid = sum/countVacanciesWithSalaryFrom;
-		console.log(mid);
-		mid = Math.round(mid);
-		//var math = require('mathjs');
-		//console.log(math.median(salaryArray));
-		var data = {
-			'mid':mid,
-			'countVacancies':countVacanciesWithSalaryFrom,
-			'title':title,
-			'regionName':regionName
-		};
+		console.log(data);
 		return data;
 	}
 	chart(){

@@ -6,7 +6,7 @@
 			
 			  <md-card-header>
 			    <div class="md-title">{{data['title']}}</div>
-			    <div class="md-subhead">{{data['regionName']}}</div>
+			    
 			  </md-card-header>
 			
 			  <md-card-actions>
