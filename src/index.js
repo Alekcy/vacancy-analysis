@@ -6,16 +6,16 @@ import Chart from 'chart.js';
 import Cards from './components/cards.vue';
 import Search from './components/search.vue';
 import Main from './main.js'
-//var Vue = require('vue');
+
 var VueMaterial = require('vue-material');
 Vue.use(VueMaterial);
-//var Main = require('./main.js');
 var main = new Main();
 Vue.use(main);
 
 var app = new Vue ({
 	el:'#app',
 	data:{
+		isHide:true,
 		searchField:'',
 		see:true,
 		values:[],
@@ -46,6 +46,7 @@ var app = new Vue ({
 				this.regionName = searchParams['regionName'];
 			}
 			this.addValue();
+			this.isHide = false;
 		},
 		del:function(index){
 			

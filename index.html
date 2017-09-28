@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>test</title>
+	<title>Vacancy analysis</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<link rel="stylesheet" type="text/css" href="src/1.css">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="src/1.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
 	<link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" type="text/css" href="node_modules/vue-material/dist/vue-material.css">
@@ -12,15 +12,22 @@
 </head>
 <body>
 <div id="app">
-  <div class="container">
-    <search  v-on:press="press"></search>
-    
-    <div v-if="searchField!==''">  
-    	<cards :values='values' v-on:del='del'></cards>
+  <div class="container" >
+    <div class="row">
+      <search  v-on:press="press"></search>
+    </div>
+    <div class="row" v-bind:class="{hide:isHide}">
+      <div class="col-md-4">
+        	<cards :values='values' v-on:del='del'></cards>
+      </div>
+      <div class="col-md-8">
+         <canvas id="chart" width="400" height="400"></canvas>
+      </div>
     </div>
     
-    <canvas id="chart" width="400" height="400"></canvas>
-   
+    <div>
+      
+    </div>
   </div>
 </div>
 <script src="dist/bundle.js"></script>

@@ -1,18 +1,7 @@
 <template>
   <div>
         <div class="row">
-          <div class="col-md-10">
-            <md-input-container>
-                <label>Search field</label>
-                <md-input v-model="searchField"></md-input>
-            </md-input-container>
-          </div>
-          <div class="col-md-2">
-            <md-button v-on:click='search' class="md-primary md-raised">Primary</md-button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-5">
             <form novalidate @submit.stop.prevent="submit">
                <md-input-container>
                 <label>Choose a country</label>
@@ -28,7 +17,7 @@
                  </md-input-container>
               </form>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
               <form  novalidate @submit.stop.prevent="submit">
                <md-input-container>
                 <label>Choose a region</label>
@@ -46,15 +35,34 @@
                 </md-input-container>
               </form>
             </div>
+            <div class="col-md-2">
+              <md-button :disabled="disAddReg" v-on:click='addReg' class="md-primary md-raised">Add Region</md-button>
+            </div>
+        </div>
+        <div class="row">
+          <RegionsList :regions="regions"></RegionsList>
+        </div>
+        <div class="row">
+          <div class="col-md-10">
+            <md-input-container>
+                <label>Search field</label>
+                <md-input v-model="searchField"></md-input>
+            </md-input-container>
           </div>
+          <div class="col-md-2">
+            <md-button disabled v-on:click='search' class="md-primary md-raised">Поиск</md-button>
           </div>
+        </div>
+    </div>
 </template>
 <script>
   import Main from '../main.js'
+  import RegionsList from './RegionsList.vue'
   var main = new Main();
   export default{
     data:function(){
       return{
+        disAddReg:true,
         dis:true,
         movie:'',
         searchField:'',
@@ -63,17 +71,25 @@
         regionName:'',
         countryList:[],
         idRegion:'',
-        regionsList:[{'name':"none"}]
+        regionsList:[{'name':"none"}],
+        regions:[]
       }
+    },
+    components:{
+      RegionsList
     },
     mounted:function(){
       this.countryList = main.getCountry();
     },
     methods:{
+      addReg:function(){
+        this.regions.push(this.regionName);
+      },
       countryChange:function(item){
         console.log(item);
         console.log('ind: '+item['id']);
         console.log(this.countryList);
+        this.disAddReg = false;
         this.dis = false;
         this.idRegion = item['id'];
         this.regionName = item['name'];
