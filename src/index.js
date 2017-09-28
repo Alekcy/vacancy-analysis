@@ -1,12 +1,12 @@
 import jquery from 'jquery';
 import materializecss from 'materialize-css';
-//import vue from 'vue';
+import Vue from 'vue';
 import mathjs from 'mathjs';
 import Chart from 'chart.js';
+import Cards from './cards.vue';
 
 
-
-var Vue = require('vue');
+//var Vue = require('vue');
 var VueMaterial = require('vue-material');
 Vue.use(VueMaterial);
 
@@ -116,6 +116,7 @@ Vue.component('search',{
   		}
   	}
 });
+/*
 Vue.component('cards',{
 	template:`
 		<div>
@@ -151,7 +152,7 @@ Vue.component('cards',{
 			this.$emit('del',index);
 		}
 	}
-});
+});*/
 var app = new Vue ({
 	el:'#app',
 	data:{
@@ -165,6 +166,9 @@ var app = new Vue ({
 			console.log('created');
 			this.chart = chart();
 			console.log(this.chart);	
+	},
+	components:{
+		Cards
 	},
 	methods:{
 		addValue:function(){
