@@ -1,8 +1,13 @@
 <template>
-	<div>
-	<div v-for="(data,index) in regions" >
-		<div>{{data['regionName']}}</div>
-	</div>
+	<div class="col-md-5">
+		<md-list>
+			<div v-for="(data,index) in regions" >
+				<md-list-item v-on:click="remove(index)">
+			     <span >{{data['regionName']}}</span>
+			   	 <md-divider ></md-divider>
+			    </md-list-item>		 
+			</div>
+		</md-list>
 	</div>
 </template>
 <script>
@@ -13,6 +18,12 @@
 		data:function(){
 			return{
 
+			}
+		},
+		methods:{
+			remove:function(index){
+				console.log('remove');
+				this.$emit('remove',index);
 			}
 		}
 	}

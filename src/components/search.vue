@@ -2,7 +2,7 @@
   <div>
         <RegionSearch v-on:regionAdded="regionAdded" :disSearch="disSearch"></RegionSearch>
         <div class="row">
-          <RegionsList :regions="regions"></RegionsList>
+          <RegionsList :regions="regions" v-on:remove="removeRegion"></RegionsList>
         </div>
         <div class="row">
           <div class="col-md-10">
@@ -39,8 +39,14 @@
       RegionsList
     },
     methods:{
+      removeRegion:function(index){
+        console.log(this.regions);
+        console.log(index);
+        this.regions.splice(index,1);
+        console.log(this.regions);
+        if(this.regions.length==0)this.disSearch = true;
+      },
       regionAdded:function(regions){
-        console.log('loooooooooool');
         this.regions = regions;
         this.disSearch = false;
       },
