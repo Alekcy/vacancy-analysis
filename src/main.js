@@ -14,7 +14,6 @@ class Main{
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'];
 		data.forEach(function(item,i){
-			console.log(backgroundColor[i]);
 			if(isFirst===true){
 				var backgroundColors=[];
 				for (var j = 0; j < 10; j++) {
@@ -45,10 +44,8 @@ class Main{
 	       		});
 			}
 			chart.data.datasets[i].data.push(item['mid']);
-			
 		});
 		chart.data.labels.push(data[0]['title']);
-		console.log(chart);
 		chart.update();
 	}
 	removeData(chart,index) {
