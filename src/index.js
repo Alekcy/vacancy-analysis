@@ -16,6 +16,7 @@ var app = new Vue ({
 	el:'#app',
 	data:{
 		isHide:true,
+		spinnerIsHide:true,
 		searchField:'',
 		see:true,
 		values:[],
@@ -40,18 +41,22 @@ var app = new Vue ({
 			console.log(this.searchParams);
 			var response = main.ajax(this.searchParams);
 			var data = main.treatment(response,this.searchParams);
+
 			this.values.push(data);
 			main.updateChart(this.chart,data,this.isFirst);
 			this.isFirst = false;
 		},
 		press:function(searchParams){
+			this.spinnerIsHide = false;
 			this.searchField = searchParams['searchField'];
 			
 			this.idRegion = searchParams['regions'][0]['idRegion'];
 			//this.regionName = ['regionName'];
 			this.searchParams = searchParams;
 			this.addValue();
+			this.spinnerIsHide = true;
 			this.isHide = false;
+
 		},
 		del:function(index){
 			
