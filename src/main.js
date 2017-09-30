@@ -1,30 +1,54 @@
 class Main{
-	updateChart(chart, label, data){
-		chart.data.labels.push(label);
-		chart.data.datasets.forEach((dataset) => {
-		    dataset.data.push(data);
+	updateChart(chart, data,isFirst){
+		var backgroundColor = [
+						'rgba(255, 99, 132, 0.2)',
+	       		        'rgba(54, 162, 235, 0.2)',
+	       		        'rgba(255, 206, 86, 0.2)',
+	       		        'rgba(75, 192, 192, 0.2)',
+	       		        'rgba(153, 102, 255, 0.2)',
+	       		        'rgba(255, 159, 64, 0.2)'];
+		data.forEach(function(item,i){
+			console.log(backgroundColor[i]);
+			if(isFirst===true){
+				var backgroundColors=[];
+				for (var j = 0; j < 10; j++) {
+					backgroundColors.push(backgroundColor[i]);
+				}
+				chart.data.datasets.push({
+	       		    label: item['regionName'],
+	       		    data: [],
+	       		    backgroundColor: [
+	       		       backgroundColor[i],
+	       		       backgroundColor[i],
+	       		       backgroundColor[i],
+	       		       backgroundColor[i],
+	       		       backgroundColor[i],
+	       		       backgroundColor[i],
+	       		       backgroundColor[i],
+	       		       backgroundColor[i],
+	       		       backgroundColor[i],
+	       		       backgroundColor[i],
+	       		       backgroundColor[i],
+	       		    ],
+	       		    borderColor: [
+	       		       backgroundColor[i+1],
+	       		       backgroundColor[i+1],
+	       		       backgroundColor[i+1],
+	       		       backgroundColor[i+1],
+	       		       backgroundColor[i+1],
+	       		       backgroundColor[i+1],
+	       		       backgroundColor[i+1],
+	       		       backgroundColor[i+1],
+	       		       backgroundColor[i+1]  
+	       		    ],
+	       		    borderWidth: 1
+	       		});
+			}
+			chart.data.datasets[i].data.push(item['mid']);
+			
 		});
-		chart.data.datasets.push({
-	    	        label: '',
-	    	        data: [],
-	    	        backgroundColor: [
-	    	            'rgba(255, 99, 132, 0.2)',
-	    	            'rgba(54, 162, 235, 0.2)',
-	    	            'rgba(255, 206, 86, 0.2)',
-	    	            'rgba(75, 192, 192, 0.2)',
-	    	            'rgba(153, 102, 255, 0.2)',
-	    	            'rgba(255, 159, 64, 0.2)'
-	    	        ],
-	    	        borderColor: [
-	    	            'rgba(255,99,132,1)',
-	    	            'rgba(54, 162, 235, 1)',
-	    	            'rgba(255, 206, 86, 1)',
-	    	            'rgba(75, 192, 192, 1)',
-	    	            'rgba(153, 102, 255, 1)',
-	    	            'rgba(255, 159, 64, 1)'
-	    	        ],
-	    	        borderWidth: 1
-	    	    });
+		chart.data.labels.push(data[0]['title']);
+		console.log(chart);
 		chart.update();
 	}
 	removeData(chart,index) {
@@ -117,7 +141,7 @@ class Main{
 	    console.log(array);
 		return array;
 	}
-	treatment(response,title){
+	treatment(response,searchParams){
 		var data = [];
 		response.forEach(function(item, i, arr) {
 			var sum = 0;
@@ -131,16 +155,18 @@ class Main{
 			  	}
 			});
 			var mid = sum/countVacanciesWithSalaryFrom;
-			console.log(mid);
+			
 			mid = Math.round(mid);
 			//var math = require('mathjs');
 			//console.log(math.median(salaryArray));
 			data.push({
 				'mid':mid,
 				'countVacancies':countVacanciesWithSalaryFrom,
-				'title':title
+				'title':searchParams['searchField'],
+				'regionName':searchParams['regions'][i]['regionName']
 			});
 		});
+		console.log('data:================');
 		console.log(data);
 		return data;
 	}
@@ -149,27 +175,7 @@ class Main{
 	    	type: 'bar',
 	    	data: {
 	    	    labels: [],
-	    	    datasets: [{
-	    	        label: '',
-	    	        data: [],
-	    	        backgroundColor: [
-	    	            'rgba(255, 99, 132, 0.2)',
-	    	            'rgba(54, 162, 235, 0.2)',
-	    	            'rgba(255, 206, 86, 0.2)',
-	    	            'rgba(75, 192, 192, 0.2)',
-	    	            'rgba(153, 102, 255, 0.2)',
-	    	            'rgba(255, 159, 64, 0.2)'
-	    	        ],
-	    	        borderColor: [
-	    	            'rgba(255,99,132,1)',
-	    	            'rgba(54, 162, 235, 1)',
-	    	            'rgba(255, 206, 86, 1)',
-	    	            'rgba(75, 192, 192, 1)',
-	    	            'rgba(153, 102, 255, 1)',
-	    	            'rgba(255, 159, 64, 1)'
-	    	        ],
-	    	        borderWidth: 1
-	    	    }]
+	    	    datasets: []
 	    	},
 	    	options: {
 	    		responsive:false,

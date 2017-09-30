@@ -22,7 +22,8 @@ var app = new Vue ({
 		chart:null,
 		idRegion:'',
 		regionName:'',
-		searchParams:[]
+		searchParams:[],
+		isFirst:true
 	},
 	mounted:function(){
 			console.log('created');
@@ -35,11 +36,13 @@ var app = new Vue ({
 	},
 	methods:{
 		addValue:function(){
+			console.log('seathParams:=========');
 			console.log(this.searchParams);
 			var response = main.ajax(this.searchParams);
-			var data = main.treatment(response,this.searchParams['searchField']);
+			var data = main.treatment(response,this.searchParams);
 			this.values.push(data);
-			main.updateChart(this.chart,data['title'],data['mid']);
+			main.updateChart(this.chart,data,this.isFirst);
+			this.isFirst = false;
 		},
 		press:function(searchParams){
 			this.searchField = searchParams['searchField'];

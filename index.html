@@ -16,7 +16,7 @@
     <div class="row">
       <search  v-on:press="press"></search>
     </div>
-    <div class="row" v-bind:class="{hide:isHide}">
+    <div class="row" :class="{hide:isHide}">
       <div class="col-md-4">
         	<cards :values='values' v-on:del='del'></cards>
       </div>
