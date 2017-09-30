@@ -1,11 +1,11 @@
 import jquery from 'jquery';
-import materializecss from 'materialize-css';
-import Vue from 'vue';
-import mathjs from 'mathjs';
-import Chart from 'chart.js';
-import Cards from './components/cards.vue';
-import Search from './components/search.vue';
-import Main from './main.js'
+ import materializecss from 'materialize-css';
+ import Vue from 'vue';
+ import mathjs from 'mathjs';
+ import Chart from 'chart.js';
+ import Cards from './components/cards.vue';
+ import Search from './components/search.vue';
+ import Main from './main.js'
 
 var VueMaterial = require('vue-material');
 Vue.use(VueMaterial);
@@ -18,18 +18,19 @@ var app = new Vue ({
 		isHide:true,
 		spinnerIsHide:true,
 		searchField:'',
-		see:true,
+		//see:true,
 		values:[],
 		chart:null,
-		idRegion:'',
-		regionName:'',
+		//idRegion:'',
+		//regionName:'',
 		searchParams:[],
-		isFirst:true
+		isFirst:true,
+		regions:[]
 	},
 	mounted:function(){
-			console.log('created');
-			this.chart = main.chart();
-			console.log(this.chart);	
+		console.log('created');
+		this.chart = main.chart();
+		console.log(this.chart);	
 	},
 	components:{
 		Cards,
@@ -39,24 +40,32 @@ var app = new Vue ({
 		addValue:function(){
 			console.log('seathParams:=========');
 			console.log(this.searchParams);
-			var response = main.ajax(this.searchParams);
-			var data = main.treatment(response,this.searchParams);
-
+			var data = [];
+			var searchParams = this.searchParams;
+			this.regions.forEach(function(item){
+				console.log(item);	
+				var response = main.ajax(item,searchParams);
+				data.push(main.treatment(response,item,searchParams));
+			});
+			console.log('dataaaaaaaaaaaaaaaa');
+			console.log(data);
 			this.values.push(data);
-			main.updateChart(this.chart,data,this.isFirst);
+			main.updateChart(this.chart,data,this.regions);
 			this.isFirst = false;
 		},
-		press:function(searchParams){
+		addedReg:function(regions){
+			console.log('aaaaaaaaaaaaaaaaaasuka');
+
+			this.regions = regions;
+			this.addValue();
+		},
+		press:function(searchField){
+			this.searchField = searchField;
+			this.searchParams.push(searchField);
 			this.spinnerIsHide = false;
-			this.searchField = searchParams['searchField'];
-			
-			this.idRegion = searchParams['regions'][0]['idRegion'];
-			//this.regionName = ['regionName'];
-			this.searchParams = searchParams;
 			this.addValue();
 			this.spinnerIsHide = true;
 			this.isHide = false;
-
 		},
 		del:function(index){
 			

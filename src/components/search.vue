@@ -45,17 +45,19 @@
         this.regions.splice(index,1);
         console.log(this.regions);
         if(this.regions.length==0)this.disSearch = true;
+        this.$emit('add',this.regions);
       },
       regionAdded:function(regions){
         this.regions = regions;
         this.disSearch = false;
+        this.search();
+        this.$emit('add',this.regions);
       },
       search:function(){
         var searchParams =[];
         if(this.searchField!==''){
-          searchParams = {'searchField':this.searchField,'regions':this.regions};
-          console.log(searchParams);
-          this.$emit('press',searchParams);
+          
+          this.$emit('press',this.searchField);
           this.searchField = '';
           this.dis = true;
         }

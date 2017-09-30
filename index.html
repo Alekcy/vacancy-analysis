@@ -14,7 +14,7 @@
 <div id="app">
   <div class="container" >
     <div class="row">
-      <search  v-on:press="press"></search>
+      <search v-on:add="addedReg" v-on:press="press"></search>
     </div>
     <div class="row" :class="{spinner:spinnerIsHide}">
       <div class="col-md-12">
@@ -28,10 +28,6 @@
       <div class="col-md-8">
          <canvas id="chart" width="400" height="400"></canvas>
       </div>
-    </div>
-    
-    <div>
-      
     </div>
   </div>
 </div>
