@@ -106,8 +106,25 @@ class Main{
 	    });
 	    chart.update();
 	}
+	getChangeRate(){
+		var response;
+		$.ajax({
+		    	url : "https://query.yahooapis.com/v1/public/yql?q=select+*+from+yahoo.finance.xchange+where+pair+=+%22USDRUB%22&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=",
+		    	type : "GET",
+		    	jsonp: "callback",
+		    	async: false,
+		    	dataType : "text",
+		    	success : function(data){
+		    	    response = data;
+		    	}	
+		});
+		response = JSON.parse(response,true);
+		var usdToRur = response.query.results.rate.Rate;
+		return usdToRur;
+	}
 	ajax(region,searchParams){
 		var response=[];
+		console.log('????????????????????????????????????????????');
 		searchParams.forEach(function(item,i,arr){
 			var dat;
 			$.ajax({
@@ -134,7 +151,12 @@ class Main{
 		});
 	    console.log('-------------------------------------');
 	    console.log(response);
+	    //response = this.otherСurrenciesToRUR(response);
 		return response;
+	}
+	otherСurrenciesToRUR(salary,changeRate){
+		salary = changeRate*salary;
+		return salary;
 	}
 	getRegion(id){
 		var response;
@@ -186,17 +208,25 @@ class Main{
 	}
 	treatment(response,region,searchParams){
 		var data = [];
-
+		//Main->otherСurrenciesToRUR('100');
+		var changeRate = this.getChangeRate();
+		console.log('changeRate'+'-----------'+changeRate);
 		searchParams.forEach(function(item,i){
 			
 			var countVacanciesWithSalaryFrom = 0;
 			var salaryArray=[];
 			var sum = 0;
-		
+			
 			response[i].forEach(function(r, j, vacancie) {
 				//console.log(vacancie);
 				  	if(vacancie[j]['salary']['from']!==null){
-				  		sum += vacancie[j]['salary']['from'];
+				  		if(vacancie[j]['salary']['currency']=='USD'){
+				  			console.log('changeRate'+'-----------'+changeRate);
+				  			var main = new Main();
+				  			sum += main.otherСurrenciesToRUR(vacancie[j]['salary']['from'],changeRate);
+				  		}else{
+				  			sum += vacancie[j]['salary']['from'];
+				  		}
 				  		countVacanciesWithSalaryFrom++;
 				  		salaryArray.push(vacancie[j]['salary']['from']);
 				  }
