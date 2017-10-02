@@ -1,6 +1,5 @@
 <template>
 	<div>
-		{{values[0]}}
 		<div v-for="(data,index) in values">
 		    <div  class="col s12 m6">
 		      	<md-card class="md-primary">

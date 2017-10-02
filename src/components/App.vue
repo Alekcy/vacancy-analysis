@@ -22,6 +22,8 @@
 import Cards from './cards.vue';
 import Search from './search.vue';
 import Main from '../main.js'
+ import Vue from 'vue';
+ //var Vue = new Vue();
 var main = new Main();
 export default{
 	data:function(){
@@ -29,7 +31,7 @@ export default{
 			isHide:true,
 			spinnerIsHide:true,
 			searchField:'',
-			values:[],
+			values:null,
 			chart:null,
 			searchParams:[],
 			isFirst:true,
@@ -55,7 +57,8 @@ export default{
 					data.push(main.treatment(response,item,searchParams));
 				});
 				var values = main.dataToValues(data);
-				this.values.push(values[0]);
+				this.values = values.vacancies;
+				console.log(this.values);
 				main.updateChart(this.chart,data,this.regions);
 				this.isFirst = false;
 			}
@@ -73,8 +76,10 @@ export default{
 			this.isHide = false;
 		},
 		del:function(index){
-			
-			this.values.splice(index,1);
+			//this.searchParams.splice(index,1);
+			console.log(this.values);
+			Vue.delete(this.values,index)
+			//delete this.values[index];
 			main.removeData(this.chart,index);
 		}
 	}
