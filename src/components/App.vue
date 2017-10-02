@@ -61,11 +61,14 @@ export default{
 				console.log(this.values);
 				main.updateChart(this.chart,data,this.regions);
 				this.isFirst = false;
+				//this.searchParams = [];
 			}
 		},
 		addedReg:function(regions){
+			if(regions.length!==0){
 			this.regions = regions;
-			this.addValue();
+			//if()
+			this.addValue();}
 		},
 		press:function(searchField){
 			this.searchField = searchField;
@@ -78,7 +81,9 @@ export default{
 		del:function(index){
 			//this.searchParams.splice(index,1);
 			console.log(this.values);
-			Vue.delete(this.values,index)
+			Vue.delete(this.values,index);
+			this.searchParams.splice(index,1);
+			//if(this.values.length==0)console.log('00000000000000000');
 			//delete this.values[index];
 			main.removeData(this.chart,index);
 		}
