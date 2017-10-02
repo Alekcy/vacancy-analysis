@@ -53,29 +53,8 @@ class Main{
 			
 				
         });
-       /*chart.data.datasets.forEach((dataset,i) => {
-        	
-				data[0][i].forEach(function(arr,j){
-					console.log(arr);
-					dataset.data.push(arr['mid']);
-					chart.data.labels.push(arr['title']);
-				});
-				
-			
-        	
-    	});*/
-       /* data.forEach(function(item,i){
-			item.forEach(function(arr,j){
-				chart.data.datasets[i].data.push(arr['mid']);
-				chart.data.labels.push(arr['title']);
-			});
-			//chart.data.labels.push(item['title']);
-		});*/
-		
 
-		chart.update();
-        
-		
+		chart.update();	
 	}
 	removeData(chart,index) {
 	    chart.data.labels.splice(index,1);
@@ -179,9 +158,6 @@ class Main{
 				  		salaryArray.push(vacancie[j]['salary']['from']);
 				  }
 			});	
-				
-				
-			
 			var mid = sum/countVacanciesWithSalaryFrom;
 			console.log(item+'-----------'+mid);
 			//mid = Math.round(mid);

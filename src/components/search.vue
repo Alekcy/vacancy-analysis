@@ -38,6 +38,7 @@
       RegionSearch,
       RegionsList
     },
+    //props:['add','addedReg'],
     methods:{
       removeRegion:function(index){
         console.log(this.regions);

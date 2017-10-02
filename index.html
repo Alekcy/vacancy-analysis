@@ -12,24 +12,7 @@
 </head>
 <body>
 <div id="app">
-  <div class="container" >
-    <div class="row">
-      <search v-on:add="addedReg" v-on:press="press"></search>
-    </div>
-    <div class="row" :class="{spinner:spinnerIsHide}">
-      <div class="col-md-12">
-        <md-spinner :md-size="150" md-indeterminate></md-spinner>
-      </div>
-    </div>
-    <div class="row" :class="{hide:isHide}">
-      <div class="col-md-4">
-        	<cards :values='values' v-on:del='del'></cards>
-      </div>
-      <div class="col-md-8">
-         <canvas id="chart" width="400" height="400"></canvas>
-      </div>
-    </div>
-  </div>
+  
 </div>
 <script src="dist/bundle.js"></script>
 </body>

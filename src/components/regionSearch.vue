@@ -57,41 +57,38 @@
    		    regions:[]
    		  }
    		},
-
 		mounted:function(){
    		  this.countryList = main.getCountry();
    		},
-     	methods:{
-			addReg:function(){
-     		  this.regions.push({'regionName':this.regionName,'idRegion':this.idRegion});
-     		 
-     		  this.$emit('regionAdded',this.regions);
-     		},
-     		countryChange:function(item){
-     		  this.disAddReg = false;
-     		  this.dis = false;
-     		  this.idRegion = item['id'];
-     		  this.regionName = item['name'];
-     		  this.getRegions(item['id']);
-     		},
-     		regionChange:function(item){
-     		  this.idRegion = item['id'];
-     		   this.regionName = item['name'];
-	
-     		},
-     		getRegions:function(id){
-     		  this.regionsList = main.getRegion(id);
-     		},
-     		filter:function(list, query) {
-     		  var arr = [];
-     		  for (var i = 0; i < list.length; i++) {
-     		      if (list[i].name.indexOf(query) !== -1)
-     		          arr.push(list[i]);
-     		      if (arr.length > 5)
-     		          break;
-     		  }
-     		  return arr;
-     		}
-     	}
+    methods:{
+      addReg:function(){
+    	  this.regions.push({'regionName':this.regionName,'idRegion':this.idRegion});
+    	  this.$emit('regionAdded',this.regions);
+    	},
+    	countryChange:function(item){
+    	  this.disAddReg = false;
+    	  this.dis = false;
+    	  this.idRegion = item['id'];
+    	  this.regionName = item['name'];
+    	  this.getRegions(item['id']);
+    	},
+    	regionChange:function(item){
+    	  this.idRegion = item['id'];
+    	  this.regionName = item['name'];
+    	},
+    	getRegions:function(id){
+    	  this.regionsList = main.getRegion(id);
+    	},
+    	filter:function(list, query) {
+    	  var arr = [];
+    	  for (var i = 0; i < list.length; i++) {
+    	      if (list[i].name.indexOf(query) !== -1)
+    	          arr.push(list[i]);
+    	      if (arr.length > 5)
+    	          break;
+    	  }
+    	  return arr;
+    	}
+    }
 	}
 </script>
