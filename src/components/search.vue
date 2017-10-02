@@ -38,7 +38,6 @@
       RegionSearch,
       RegionsList
     },
-    //props:['add','addedReg'],
     methods:{
       removeRegion:function(index){
         this.regions.splice(index,1);

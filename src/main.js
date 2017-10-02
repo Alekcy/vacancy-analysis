@@ -200,7 +200,7 @@ class Main{
 				  			if(vacancie[j]['salary']['currency']=='USD'){
 				  				console.log('changeRate'+'-----------'+changeRate);
 				  				var main = new Main();
-				  				sum += main.otherСurrenciesToRUR(vacancie[j]['salary']['from'],changeRate);
+				  				sum += main.otherCurrenciesToRUR(vacancie[j]['salary']['from'],changeRate);
 				  			}else{
 				  				sum += vacancie[j]['salary']['from'];
 				  			}
@@ -234,7 +234,8 @@ class Main{
 		return data;
 	}
 	chart(){
-		var chart = new Chart('chart', {
+		 var ctx = document.getElementById("chart");
+		var chart = new Chart(ctx, {
 	    	type: 'bar',
 	    	data: {
 	    	    labels: [],
