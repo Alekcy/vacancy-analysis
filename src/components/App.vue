@@ -47,15 +47,18 @@ export default{
 		addValue:function(){
 			var data = [];
 			var searchParams = this.searchParams;
-			this.regions.forEach(function(item){
-				var response = main.ajax(item,searchParams);
-				data.push(main.treatment(response,item,searchParams));
-			});
-			console.log('data:----------------------------------------');
-			console.log(data);
-			this.values.push(data);
-			main.updateChart(this.chart,data,this.regions);
-			this.isFirst = false;
+			console.log('params**************');
+			console.log(searchParams);
+			if(searchParams.length!==0){
+				this.regions.forEach(function(item){
+					var response = main.ajax(item,searchParams);
+					data.push(main.treatment(response,item,searchParams));
+				});
+				var values = main.dataToValues(data);
+				this.values.push(values[0]);
+				main.updateChart(this.chart,data,this.regions);
+				this.isFirst = false;
+			}
 		},
 		addedReg:function(regions){
 			this.regions = regions;

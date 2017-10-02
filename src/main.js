@@ -1,4 +1,47 @@
 class Main{
+	dataToValues(data){
+		console.log('data:----------------------------------------');
+		console.log(data);
+		var values = {};
+		/*for (var i = 0 ; i <= data[0].length; i++) {
+			//console.log(data);
+			for (var j = 0 ; j <= data.length; j++) {
+				console.log(data[j][i]);
+				values.push(data[j][i]['title']);
+			}
+		}*/
+
+		//var i = 0;
+		var length = data.length;
+		for (var i = 0 ; i < data[0].length; i++) {
+			for (var j = 0 ; j < data.length; j++) {
+				//console.log(data[j][i]);
+				//values.push(data[j][i]['title']);
+				if(j==0)values[i] = ({'title':data[j][i].title,
+									  'regions':{}});
+				values[i].regions[j] = ({'regionName':data[j][i].regionName,
+										 'mid':data[j][i].mid,
+										 'countVacancies':data[j][i].countVacancies});
+				//values[i]
+				console.log('i='+i+'j='+j);
+				console.log(data[j][i].title);
+			}
+			/*data.forEach(function(region,j,array,i){
+				console.log(region);
+				array[i].forEach(function(arr){
+
+				});
+					//values[i] = region[i]['title'];
+					values[i] = region[i]['title'];
+					values[i].push(region[i]['regionName']);
+					
+					//if(j==length)i++;
+			});*/
+		};
+		
+		console.log(values);
+		return values;
+	}
 	updateChart(chart, data,regions){
 		var backgroundColor = [
 						'rgba(255, 99, 132, 0.2)',
