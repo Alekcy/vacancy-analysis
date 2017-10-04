@@ -1,5 +1,5 @@
 class Main{
-	check(){
+	check(chart,t,callback){
 		var response;
 		$.ajax({
 		    	url : "/3/vacancy-analysis/check",
@@ -8,10 +8,61 @@ class Main{
 		    	//async: false,
 		    	dataType : "text",
 		    	success : function(data){
-		    	    response = data;
-		    	    console.log(data);
-		    	}	
+		    		var main = new Main();
+		    		 main.succes(data,chart);
+		    		 callback(t);
+		    	}
 		});
+
+		
+		
+	}
+	succes(data,chart){
+		var response = data;
+		console.log(data);
+		response = JSON.parse(response,true);
+	    this.updateChartCheck(response,chart);
+	}
+	updateChartCheck(data,chart){
+		console.log(data);
+       	chart.data.datasets = [];
+       	chart.data.labels =[];
+       	chart.type = 'horizontalBar';
+       	chart.data.datasets.push({
+	       		label: 's',
+	       		data: [],
+	       		backgroundColor: [
+	       		  'rgba(255, 99, 132, 0.2)',
+	       		        'rgba(54, 162, 235, 0.2)',
+	       		        'rgba(255, 206, 86, 0.2)',
+	       		        'rgba(75, 192, 192, 0.2)',
+	       		        'rgba(153, 102, 255, 0.2)',
+	       		        'rgba(255, 159, 64, 0.2)'
+	       		],
+	       		borderColor: [
+	       		   'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+	       		],
+	       		borderWidth: 1
+	    });
+	    var i = 0;
+       	for(var d in data){
+       		chart.data.datasets[0].data.push(data[d]);
+			chart.data.labels.push(d);
+			i++;
+			if(i>10) break;
+       		//console.log(data[d]);
+       	}
+        /*data.forEach(function(value,key){
+			chart.data.datasets[0].data.push(value);
+			chart.data.labels.push(key);
+        });*/
+
+		chart.update();	
 	}
 	dataToValues(data){
 		console.log('data:----------------------------------------');
@@ -256,7 +307,7 @@ class Main{
 	    	    datasets: []
 	    	},
 	    	options: {
-	    		responsive:false,
+	    		//responsive:false,
 	    	    scales: {
 	    	        yAxes: [{
 	    	            ticks: {

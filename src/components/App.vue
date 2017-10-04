@@ -69,8 +69,16 @@ export default{
 			//if()
 			this.addValue();}
 		},
-		tr:function(){
-			main.check();
+		tr:async function(){
+			//this.spinnerIsHide = false;
+			var t = this;
+			//App.spinnerIsHide = true;
+			main.check(this.chart,this,function(t){
+				console.log('r');
+				t.spinnerIsHide = true;
+				t.isHide = false;
+			});
+			
 		},
 		press:function(searchField,id){
 			if(id!=='2'){
@@ -85,8 +93,7 @@ export default{
 				this.searchParams.push(searchField);
 				this.spinnerIsHide = false;
 				this.tr();
-				this.spinnerIsHide = true;
-				this.isHide = false;
+				
 			}
 		},
 		del:function(index){

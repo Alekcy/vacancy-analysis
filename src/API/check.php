@@ -1,6 +1,8 @@
 <?php
 require 'vendor/autoload.php';
 require_once 'src/DB.php';
+ini_set('max_execution_time', 900);
+
 /**
 * 
 */
@@ -17,7 +19,7 @@ class Check
 		$client = new \GuzzleHttp\Client();        
 
 		$searchField = 'python';   
-		$res = $client->request('GET','https://api.hh.ru/vacancies?area=113&text="'.$searchField.'"&per_page=100&page=0');  
+		$res = $client->request('GET','https://api.hh.ru/vacancies?area=113&text="'.$searchField.'"&per_page=50&page=0');  
 		$result =  $res->getBody();                                                                                        
 		$result = json_decode($result,true);                      
 		$masArray = [];     
