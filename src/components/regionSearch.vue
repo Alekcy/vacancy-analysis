@@ -56,14 +56,28 @@
    		    regionsList:[{'name':"none"}],
    		    regions:[]
    		  }
-   		},
+   	},
+    props:['id'],
 		mounted:function(){
    		  this.countryList = main.getCountry();
    		},
     methods:{
       addReg:function(){
-    	  this.regions.push({'regionName':this.regionName,'idRegion':this.idRegion});
-    	  this.$emit('regionAdded',this.regions);
+        console.log(this.regions+this.id);
+        if(this.id!=='2'){
+    	    this.regions.push({'regionName':this.regionName,'idRegion':this.idRegion});
+    	    this.$emit('regionAdded',this.regions);
+        }else{
+          if(this.regions.length>=1){
+            console.log('ddd');
+            this.disAddReg = true;
+             console.log(this.regions);
+          }else{
+            this.regions.push({'regionName':this.regionName,'idRegion':this.idRegion});
+            this.$emit('regionAdded',this.regions);
+
+          }
+        }
     	},
     	countryChange:function(item){
     	  this.disAddReg = false;

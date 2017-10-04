@@ -1,6 +1,6 @@
 <template>
   <div>
-    <RegionSearch v-on:regionAdded="regionAdded" :disSearch="disSearch"></RegionSearch>
+    <RegionSearch v-bind:id="id" v-on:regionAdded="regionAdded" :disSearch="disSearch"></RegionSearch>
     <div class="row">
       <RegionsList :regions="regions" v-on:remove="removeRegion"></RegionsList>
     </div>
@@ -15,6 +15,14 @@
         <md-button :disabled="disSearch" v-on:click='search' class="md-primary md-raised">Поиск</md-button>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div>
+          <md-radio v-model="radio1" md-value="1"  v-on:change="changeRadio('1')">Сравнить зарплаты</md-radio>
+          <md-radio v-model="radio1" md-value="2"  v-on:change="changeRadio('2')">Требования</md-radio>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -27,6 +35,8 @@
   export default{
     data:function(){
       return{
+        radio1:'1',
+        id:'1',
         searchParams:[],
         disSearch:true,
         dis:true,
@@ -39,6 +49,14 @@
       RegionsList
     },
     methods:{
+      changeRadio:function(id){
+        if(id!==this.id){
+          this.id = id;
+          console.log(this.radio1);
+        }
+        //
+
+      },
       removeRegion:function(index){
         this.regions.splice(index,1);
         if(this.regions.length==0)this.disSearch = true;
@@ -54,7 +72,7 @@
         var searchParams =[];
         if(this.searchField!==''){
           
-          this.$emit('press',this.searchField);
+          this.$emit('press',this.searchField,this.id);
           this.searchField = '';
           this.dis = true;
         }

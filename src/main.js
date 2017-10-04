@@ -1,4 +1,18 @@
 class Main{
+	check(){
+		var response;
+		$.ajax({
+		    	url : "/3/vacancy-analysis/check",
+		    	type : "GET",
+		    	jsonp: "callback",
+		    	//async: false,
+		    	dataType : "text",
+		    	success : function(data){
+		    	    response = data;
+		    	    console.log(data);
+		    	}	
+		});
+	}
 	dataToValues(data){
 		console.log('data:----------------------------------------');
 		console.log(data);
@@ -234,7 +248,7 @@ class Main{
 		return data;
 	}
 	chart(){
-		 var ctx = document.getElementById("chart");
+		var ctx = document.getElementById("chart");
 		var chart = new Chart(ctx, {
 	    	type: 'bar',
 	    	data: {

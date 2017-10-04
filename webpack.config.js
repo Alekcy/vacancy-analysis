@@ -69,7 +69,12 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+  watch:true,
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 1000
+  }
 }
 
 if (process.env.NODE_ENV === 'production') {

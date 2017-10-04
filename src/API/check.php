@@ -17,7 +17,7 @@ class Check
 		$client = new \GuzzleHttp\Client();        
 
 		$searchField = 'python';   
-		$res = $client->request('GET','https://api.hh.ru/vacancies?area=113&text="'.$searchField.'"&per_page=10&page=0');  
+		$res = $client->request('GET','https://api.hh.ru/vacancies?area=113&text="'.$searchField.'"&per_page=100&page=0');  
 		$result =  $res->getBody();                                                                                        
 		$result = json_decode($result,true);                      
 		$masArray = [];     
@@ -29,14 +29,10 @@ class Check
 		    $arr = preg_split("[\s+]", $vacancie['description']);                                                          
 		    $arr = $this->treatmentArray($arr);
 		    array_push($masArray,$arr);                                                                                    
-		}                                                                                                                  
-		//print_r($masArray);                                                                                              
+		}
 		$arr = $this->countWordsInDescription($masArray,$words);
-		//$arr = $this->arraySort($arr);
-		//arsort($arr);
-		//print_r($arr[0]);
+		arsort($arr);
 		$jsonResponse  = json_encode($arr);
-		//echo ($jsonResponse);
 		return $jsonResponse;
 	}
 	private function treatmentArray($arr)
@@ -67,11 +63,8 @@ class Check
 	                if($wordVacancie===$word['word']){
 	                    $check = $this->checkArray($arr,$word['word']);                                                       
 	                    if(!$check){                                                                                   
-	                        //$tempArr = ['word'=>$word['word'],'count'=>0];                                             
-	                       	
 	                       	$arr[$word['word']] = 1;                                                              
 	                    }else{                                                                                         
-	                        //$index = $this->indexOf($arr,$word['word']);                                                      
 	                        $arr[$word['word']] += 1;                                                                
 	                    }                                                                                              
 	                }                                                                                                  

@@ -61,7 +61,6 @@ export default{
 				console.log(this.values);
 				main.updateChart(this.chart,data,this.regions);
 				this.isFirst = false;
-				//this.searchParams = [];
 			}
 		},
 		addedReg:function(regions){
@@ -70,21 +69,30 @@ export default{
 			//if()
 			this.addValue();}
 		},
-		press:function(searchField){
-			this.searchField = searchField;
-			this.searchParams.push(searchField);
-			this.spinnerIsHide = false;
-			this.addValue();
-			this.spinnerIsHide = true;
-			this.isHide = false;
+		tr:function(){
+			main.check();
+		},
+		press:function(searchField,id){
+			if(id!=='2'){
+				this.searchField = searchField;
+				this.searchParams.push(searchField);
+				this.spinnerIsHide = false;
+				this.addValue();
+				this.spinnerIsHide = true;
+				this.isHide = false;
+			}else{
+				this.searchField = searchField;
+				this.searchParams.push(searchField);
+				this.spinnerIsHide = false;
+				this.tr();
+				this.spinnerIsHide = true;
+				this.isHide = false;
+			}
 		},
 		del:function(index){
-			//this.searchParams.splice(index,1);
 			console.log(this.values);
 			Vue.delete(this.values,index);
 			this.searchParams.splice(index,1);
-			//if(this.values.length==0)console.log('00000000000000000');
-			//delete this.values[index];
 			main.removeData(this.chart,index);
 		}
 	}
