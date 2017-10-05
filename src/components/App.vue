@@ -5,7 +5,7 @@
     </div>
     <div class="row" :class="{spinner:spinnerIsHide}">
       <div class="col-md-12">
-        <md-spinner :md-size="150" md-indeterminate></md-spinner>
+       	<md-progress :md-progress="progress"></md-progress>
       </div>
     </div>
     <div class="row" :class="{hide:isHide}">
@@ -28,6 +28,7 @@ var main = new Main();
 export default{
 	data:function(){
 		return{
+			progress:0,
 			isHide:true,
 			spinnerIsHide:true,
 			searchField:'',
@@ -65,14 +66,11 @@ export default{
 		},
 		addedReg:function(regions){
 			if(regions.length!==0){
-			this.regions = regions;
-			//if()
-			this.addValue();}
+				this.regions = regions;
+				this.addValue();
+			}
 		},
 		tr:async function(){
-			//this.spinnerIsHide = false;
-			var t = this;
-			//App.spinnerIsHide = true;
 			main.check(this.chart,this,function(t){
 				console.log('r');
 				t.spinnerIsHide = true;

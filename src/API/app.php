@@ -4,7 +4,6 @@ require_once 'check.php';
 
 $app = new \Slim\App();
 $app->get('/',function(){
-	//echo "string";
 	require_once 'index.html';
 
 });
@@ -13,5 +12,10 @@ $app->get('/check',function(){
 	$json = $check->checke();
 	echo $json;
 
+});
+$app->get('/check/progress',function(){
+	session_start();
+	echo $_SESSION['count'];
+	session_write_close();
 });
 $app->run();

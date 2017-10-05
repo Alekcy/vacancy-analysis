@@ -3,6 +3,7 @@ require 'vendor/autoload.php';
 require_once 'src/DB.php';
 ini_set('max_execution_time', 900);
 
+
 /**
 * 
 */
@@ -23,14 +24,22 @@ class Check
 		$result =  $res->getBody();                                                                                        
 		$result = json_decode($result,true);                      
 		$masArray = [];     
-		//print_r($result);                                                                                               
+		//print_r($result);   
+		$numbersOfItems = count($result['items']);
+		$onePercentProgress = 100/$numbersOfItems;
+		session_start();
+		$_SESSION['count'] = 0;
+		session_write_close();   
 		foreach ($result['items'] as $key => $res) {
+			session_start();
 		    $vacancie = $client->request('GET', $res['url']);                                                              
 		    $vacancie = $vacancie->getBody();                                                                              
 		    $vacancie = json_decode($vacancie,true);                                                                       
 		    $arr = preg_split("[\s+]", $vacancie['description']);                                                          
 		    $arr = $this->treatmentArray($arr);
-		    array_push($masArray,$arr);                                                                                    
+		    array_push($masArray,$arr);      
+		    $_SESSION['count'] +=$onePercentProgress;
+		    session_write_close();                                                                     
 		}
 		$arr = $this->countWordsInDescription($masArray,$words);
 		arsort($arr);

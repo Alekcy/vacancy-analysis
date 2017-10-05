@@ -1,22 +1,39 @@
 class Main{
 	check(chart,t,callback){
+		console.log(t);
 		var response;
+		var myVar = setInterval(this.inter.bind(null,t), 1000);
 		$.ajax({
 		    	url : "/3/vacancy-analysis/check",
 		    	type : "GET",
 		    	jsonp: "callback",
-		    	//async: false,
 		    	dataType : "text",
 		    	success : function(data){
 		    		var main = new Main();
 		    		 main.succes(data,chart);
 		    		 callback(t);
+		    		 clearInterval(myVar);
 		    	}
-		});
-
-		
-		
+		});	
 	}
+	inter(t){
+		console.log(t)
+		var main = new Main();
+        main.ajax_progress(t);
+	}
+	ajax_progress(t){
+		$.ajax({
+		    	url : "/3/vacancy-analysis/check/progress",
+		    	type : "GET",
+		    	jsonp: "callback",
+		    	dataType : "text",
+		    	success : function(data){
+		    			data = parseInt(data);
+		    			t.progress = data;
+		    		 	console.log(data);
+		    	}
+		});	
+	};
 	succes(data,chart){
 		var response = data;
 		console.log(data);
