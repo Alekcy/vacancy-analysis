@@ -1,7 +1,7 @@
 <template>
 	<div class="container" >
     <div class="row">
-      <search v-on:add="addedReg" v-on:press="press"></search>
+      <search v-on:add="addedReg" v-on:changeType="changeType" v-on:press="press"></search>
     </div>
     <div class="row" :class="{spinner:spinnerIsHide}">
       <div class="col-md-12">
@@ -16,37 +16,49 @@
          <canvas id="chart" width="400" height="400"></canvas>
       </div>
     </div>
+    <div class="row" :class="{secondChart:secondType}">
+    	<canvas id="secondChart" width="400" height="400"></canvas>
+    </div>
   </div>
 </template>
 <script>
 import Cards from './cards.vue';
 import Search from './search.vue';
 import Main from '../main.js'
- import Vue from 'vue';
+import Vue from 'vue';
  //var Vue = new Vue();
 var main = new Main();
 export default{
 	data:function(){
 		return{
+			secondType:true,
 			progress:0,
 			isHide:true,
 			spinnerIsHide:true,
 			searchField:'',
 			values:null,
 			chart:null,
+			secondChart:null,
 			searchParams:[],
 			isFirst:true,
 			regions:[]
 		}
 	},
 	mounted:function(){
-		this.chart = main.chart();	
+		this.chart = main.chart();
+		this.secondChart = main.createSecondChart();	
 	},
 	components:{
 		Cards,
 		Search
 	},
 	methods:{
+		changeType:function(){
+			this.isHide = true;
+			this.searchParams = [];
+			this.regions = [];	
+			this.values = [];
+		},
 		addValue:function(){
 			var data = [];
 			var searchParams = this.searchParams;
@@ -71,9 +83,9 @@ export default{
 			}
 		},
 		tr: function(){
-			main.check(this.chart,this.searchParams[0],this,function(t){
+			main.check(this.secondChart,this.searchParams[0],this,function(t){
 				t.spinnerIsHide = true;
-				t.isHide = false;
+				t.secondType = false;
 			});
 		},
 		press:function(searchField,id){

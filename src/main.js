@@ -47,7 +47,6 @@ class Main{
 		console.log(data);
        	chart.data.datasets = [];
        	chart.data.labels =[];
-       	chart.type = 'horizontalBar';
        	chart.data.datasets.push({
 	       		label: 's',
 	       		data: [],
@@ -296,6 +295,27 @@ class Main{
 	    	}
 		});
 		return chart;
+	}
+	createSecondChart(){
+		var ctx = document.getElementById("secondChart");
+		var schart = new Chart(ctx, {
+	    	type: 'horizontalBar',
+	    	data: {
+	    	    labels: [],
+	    	    datasets: []
+	    	},
+	    	options: {
+	    		//responsive:false,
+	    	    scales: {
+	    	        yAxes: [{
+	    	            ticks: {
+	    	                beginAtZero:true
+	    	            }
+	    	        }]
+	    	    }
+	    	}
+		});
+		return schart;
 	}
 }
 module.exports = Main;

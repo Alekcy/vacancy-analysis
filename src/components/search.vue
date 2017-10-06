@@ -52,7 +52,7 @@
       changeRadio:function(id){
         if(id!==this.id){
           this.id = id;
-          console.log(this.radio1);
+          this.$emit('changeType');
         }
         //
 
