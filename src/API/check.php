@@ -19,7 +19,7 @@ class Check
 		//print_r($words);             
 		$client = new \GuzzleHttp\Client();        
 
-		$searchField = 'python';   
+		$searchField = $_GET['searchText'];   
 		$res = $client->request('GET','https://api.hh.ru/vacancies?area=113&text="'.$searchField.'"&per_page=50&page=0');  
 		$result =  $res->getBody();                                                                                        
 		$result = json_decode($result,true);                      

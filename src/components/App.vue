@@ -70,28 +70,23 @@ export default{
 				this.addValue();
 			}
 		},
-		tr:async function(){
-			main.check(this.chart,this,function(t){
-				console.log('r');
+		tr: function(){
+			main.check(this.chart,this.searchParams[0],this,function(t){
 				t.spinnerIsHide = true;
 				t.isHide = false;
 			});
-			
 		},
 		press:function(searchField,id){
+			this.searchField = searchField;
+			this.searchParams.push(searchField);
+			this.spinnerIsHide = false;
 			if(id!=='2'){
-				this.searchField = searchField;
-				this.searchParams.push(searchField);
-				this.spinnerIsHide = false;
 				this.addValue();
 				this.spinnerIsHide = true;
 				this.isHide = false;
 			}else{
-				this.searchField = searchField;
-				this.searchParams.push(searchField);
-				this.spinnerIsHide = false;
 				this.tr();
-				
+				this.searchParams = [];
 			}
 		},
 		del:function(index){

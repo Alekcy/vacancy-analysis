@@ -1,5 +1,5 @@
 class Main{
-	check(chart,t,callback){
+	check(chart,searchText,t,callback){
 		console.log(t);
 		var response;
 		var myVar = setInterval(this.inter.bind(null,t), 1000);
@@ -7,6 +7,9 @@ class Main{
 		    	url : "/3/vacancy-analysis/check",
 		    	type : "GET",
 		    	jsonp: "callback",
+		    	data:{
+		    		'searchText':searchText
+		    	},
 		    	dataType : "text",
 		    	success : function(data){
 		    		var main = new Main();
@@ -72,18 +75,10 @@ class Main{
 			chart.data.labels.push(d);
 			i++;
 			if(i>10) break;
-       		//console.log(data[d]);
        	}
-        /*data.forEach(function(value,key){
-			chart.data.datasets[0].data.push(value);
-			chart.data.labels.push(key);
-        });*/
-
 		chart.update();	
 	}
 	dataToValues(data){
-		console.log('data:----------------------------------------');
-		console.log(data);
 		var values = {'vacancies':{}};
 		var length = data.length;
 		for (var i = 0 ; i < data[0].length; i++) {
@@ -93,12 +88,8 @@ class Main{
 				values.vacancies[i].regions[j] = ({'regionName':data[j][i].regionName,
 										 'mid':data[j][i].mid,
 										 'countVacancies':data[j][i].countVacancies});
-				console.log('i='+i+'j='+j);
-				console.log(data[j][i].title);
 			}
 		};
-		
-		console.log(values);
 		return values;
 	}
 	updateChart(chart, data,regions){
@@ -140,22 +131,13 @@ class Main{
 	       		],
 	       		borderWidth: 1
 	       	});
-       	});
-       	 console.log(chart);
-        console.log('data:1111111111111111111111111111111111111');
-        console.log(data);
-        
+       	});      
         data.forEach(function(arr,j){
-        	console.log(arr);
-        		
 			arr.forEach(function(item,i){
 				chart.data.datasets[j].data.push(item['mid']);
 				if(j==0)chart.data.labels.push(item['title']);
-			});
-			
-				
+			});	
         });
-
 		chart.update();	
 	}
 	removeData(chart,index) {
@@ -207,9 +189,6 @@ class Main{
 	    	dat = dat['items'];
 	    	response.push(dat);
 		});
-	    console.log('-------------------------------------');
-	    console.log(response);
-	    //response = this.otherСurrenciesToRUR(response);
 		return response;
 	}
 	otherСurrenciesToRUR(salary,changeRate){
@@ -230,14 +209,10 @@ class Main{
 		    }	
 		});
 		response = JSON.parse(response,true);
-		console.log(response);
 		var array = [];
 		response['areas'].forEach(function(item,i,arr){
-			//console.log(item);
 			array.push({'id':item['id'],'name':item['name']});
 		});
-	    //response = response['items'];
-	    console.log(array);
 		return array;
 	}
 	getCountry(){
@@ -254,21 +229,15 @@ class Main{
 		    }	
 		});
 		response = JSON.parse(response,true);
-		console.log(response);
 		var array = [];
 		response.forEach(function(item,i,arr){
-			//console.log(item);
 			array.push({'id':item['id'],'name':item['name']});
 		});
-	    //response = response['items'];
-	    console.log(array);
 		return array;
 	}
 	treatment(response,region,searchParams){
 		var data = [];
-		//Main->otherСurrenciesToRUR('100');
 		var changeRate = this.getChangeRate();
-		console.log('changeRate'+'-----------'+changeRate);
 		searchParams.forEach(function(item,i){
 			
 			var countVacanciesWithSalaryFrom = 0;
@@ -276,11 +245,9 @@ class Main{
 			var sum = 0;
 			
 			response[i].forEach(function(r, j, vacancie) {
-				//console.log(vacancie);
 					try {
 				  		if(vacancie[j]['salary']['from']!==null){
 				  			if(vacancie[j]['salary']['currency']=='USD'){
-				  				console.log('changeRate'+'-----------'+changeRate);
 				  				var main = new Main();
 				  				sum += main.otherCurrenciesToRUR(vacancie[j]['salary']['from'],changeRate);
 				  			}else{
@@ -289,13 +256,7 @@ class Main{
 				  			countVacanciesWithSalaryFrom++;
 				  			salaryArray.push(vacancie[j]['salary']['from']);
 				  		}
-					
-					} catch (err) {
-					
-					  // обработка ошибки
-					
-					}
-
+					} catch (err) {}
 			});	
 			var mid = sum/countVacanciesWithSalaryFrom;
 			console.log(item+'-----------'+mid);
