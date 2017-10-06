@@ -10,10 +10,10 @@
     </div>
     <div class="row" :class="{hide:isHide}">
       <div class="col-md-4">
-        	<cards :values='values' v-on:del='del'></cards>
+        <cards :values='values' v-on:del='del'></cards>
       </div>
       <div class="col-md-8">
-         <canvas id="chart" width="400" height="400"></canvas>
+        <canvas id="chart" width="400" height="400"></canvas>
       </div>
     </div>
     <div class="row" :class="{secondChart:secondType}">
@@ -62,8 +62,6 @@ export default{
 		addValue:function(){
 			var data = [];
 			var searchParams = this.searchParams;
-			console.log('params**************');
-			console.log(searchParams);
 			if(searchParams.length!==0){
 				this.regions.forEach(function(item){
 					var response = main.ajax(item,searchParams);
@@ -71,7 +69,6 @@ export default{
 				});
 				var values = main.dataToValues(data);
 				this.values = values.vacancies;
-				console.log(this.values);
 				main.updateChart(this.chart,data,this.regions);
 				this.isFirst = false;
 			}
@@ -83,7 +80,7 @@ export default{
 			}
 		},
 		tr: function(){
-			main.check(this.secondChart,this.searchParams[0],this,function(t){
+			main.check(this.secondChart,this.regions[0],this.searchParams[0],this,function(t){
 				t.spinnerIsHide = true;
 				t.secondType = false;
 			});
@@ -97,12 +94,12 @@ export default{
 				this.spinnerIsHide = true;
 				this.isHide = false;
 			}else{
+				console.log(this.regions);
 				this.tr();
 				this.searchParams = [];
 			}
 		},
 		del:function(index){
-			console.log(this.values);
 			Vue.delete(this.values,index);
 			this.searchParams.splice(index,1);
 			main.removeData(this.chart,index);

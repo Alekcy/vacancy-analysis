@@ -20,7 +20,9 @@ class Check
 		$client = new \GuzzleHttp\Client();        
 
 		$searchField = $_GET['searchText'];   
-		$res = $client->request('GET','https://api.hh.ru/vacancies?area=113&text="'.$searchField.'"&per_page=50&page=0');  
+		$regionId = $_GET['region'];
+		//$regionId  = 113;
+		$res = $client->request('GET','https://api.hh.ru/vacancies?area='.$regionId.'&text="'.$searchField.'"&per_page=50&page=0');  
 		$result =  $res->getBody();                                                                                        
 		$result = json_decode($result,true);                      
 		$masArray = [];     

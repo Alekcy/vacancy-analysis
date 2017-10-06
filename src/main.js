@@ -1,5 +1,5 @@
 class Main{
-	check(chart,searchText,t,callback){
+	check(chart,region,searchText,t,callback){
 		console.log(t);
 		var response;
 		var myVar = setInterval(this.inter.bind(null,t), 1000);
@@ -8,6 +8,7 @@ class Main{
 		    	type : "GET",
 		    	jsonp: "callback",
 		    	data:{
+		    		'region':region['idRegion'],
 		    		'searchText':searchText
 		    	},
 		    	dataType : "text",

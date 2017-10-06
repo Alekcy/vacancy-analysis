@@ -35,7 +35,7 @@
               </form>
             </div>
             <div class="col-md-2">
-              <md-button :disabled="disAddReg" v-on:click='addReg' class="md-primary md-raised">Add Region</md-button>
+              <md-button :disabled="rem" v-on:click='addReg' class="md-primary md-raised col-md-12">Add Region</md-button>
             </div>
         </div>
 </template>
@@ -45,7 +45,6 @@
 	export default{
 		data:function(){
    		  return{   
-
    		    disAddReg:true,
    		    dis:true,
    		    country:'',
@@ -54,14 +53,16 @@
    		    countryList:[],
    		    idRegion:'',
    		    regionsList:[{'name':"none"}],
-   		    regions:[]
+   		    regions:[],
+
    		  }
    	},
-    props:['id'],
+    props:['id','rem'],
 		mounted:function(){
    		  this.countryList = main.getCountry();
    		},
     methods:{
+
       addReg:function(){
         console.log(this.regions+this.id);
         if(this.id!=='2'){
@@ -70,7 +71,7 @@
         }else{
           if(this.regions.length>=1){
             console.log('ddd');
-            this.disAddReg = true;
+            this.$emit('disReg',this.rem);
              console.log(this.regions);
           }else{
             this.regions.push({'regionName':this.regionName,'idRegion':this.idRegion});
@@ -80,7 +81,7 @@
         }
     	},
     	countryChange:function(item){
-    	  this.disAddReg = false;
+    	  this.$emit('disReg',this.rem);
     	  this.dis = false;
     	  this.idRegion = item['id'];
     	  this.regionName = item['name'];

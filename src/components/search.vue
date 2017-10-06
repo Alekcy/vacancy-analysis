@@ -1,6 +1,6 @@
 <template>
   <div>
-    <RegionSearch v-bind:id="id" v-on:regionAdded="regionAdded" :disSearch="disSearch"></RegionSearch>
+    <RegionSearch v-bind:id="id" v-bind:rem="rem" v-on:disReg="disReg" v-on:regionAdded="regionAdded" :disSearch="disSearch"></RegionSearch>
     <div class="row">
       <RegionsList :regions="regions" v-on:remove="removeRegion"></RegionsList>
     </div>
@@ -12,7 +12,7 @@
         </md-input-container>
       </div>
       <div class="col-md-2">
-        <md-button :disabled="disSearch" v-on:click='search' class="md-primary md-raised">Поиск</md-button>
+        <md-button :disabled="disSearch" v-on:click='search' class="md-primary md-raised col-md-12">Поиск</md-button>
       </div>
     </div>
     <div class="row">
@@ -41,7 +41,8 @@
         disSearch:true,
         dis:true,
         searchField:'',
-        regions:[]
+        regions:[],
+        rem:true
       }
     },
     components:{
@@ -49,18 +50,22 @@
       RegionsList
     },
     methods:{
+      disReg:function(rem){
+        if(rem===true)this.rem = false;
+        else this.rem = true;
+      },
       changeRadio:function(id){
         if(id!==this.id){
           this.id = id;
           this.$emit('changeType');
         }
-        //
-
       },
       removeRegion:function(index){
+        this.rem = false;
         this.regions.splice(index,1);
         if(this.regions.length==0)this.disSearch = true;
         this.$emit('add',this.regions);
+
       },
       regionAdded:function(regions){
         this.regions = regions;
