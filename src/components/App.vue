@@ -1,5 +1,5 @@
 <template>
-	<div class="container" >{{regionss}}
+	<div class="container" >
     	<div class="row">
     	  <search v-on:add="addedReg" v-on:changeType="changeType" v-on:press="press"></search>
     	</div>
@@ -27,9 +27,8 @@ import Search from './search.vue';
 import Main from '../main.js'
 import Vue from 'vue';
 
-
- //var Vue = new Vue();
 var main = new Main();
+
 export default{
 	data:function(){
 		return{
@@ -49,11 +48,6 @@ export default{
 		this.chart = main.chart();
 		this.secondChart = main.createSecondChart();	
 	},
-	computed: {
- 	  regionss () {
- 	    return this.$store.state.regions
- 	  }
- 	},
 	components:{
 		Cards,
 		Search

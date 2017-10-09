@@ -1,6 +1,6 @@
 <template>
 	<div class="row">
-          <div class="col-md-5">
+          <div class="col-md-3">
             <form novalidate @submit.stop.prevent="submit">
                 <md-input-container>
                   <label>Choose a country</label>
@@ -16,7 +16,7 @@
                 </md-input-container>
             </form>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-3">
               <form  novalidate @submit.stop.prevent="submit">
                <md-input-container>
                 <label>Choose a region</label>
@@ -34,7 +34,25 @@
                 </md-input-container>
               </form>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
+              <form  novalidate @submit.stop.prevent="submit">
+               <md-input-container>
+                <label>Choose a region</label>
+                <md-autocomplete  v-model="city" 
+                              :disabled="dis"
+                              :list="citiesList"
+                               print-attribute="name"
+                              :min-chars="0"
+                              :max-height="60"
+                              :maxlength="100"
+                              :filter-list="filter"
+                              :debounce="500"
+                              v-on:selected="cityChange">
+                </md-autocomplete>
+                </md-input-container>
+              </form>
+            </div>
+            <div class="col-md-3">
               <md-button :disabled="rem" v-on:click='addReg' class="md-primary md-raised col-md-12">Add Region</md-button>
             </div>
         </div>
@@ -49,12 +67,12 @@
    		    dis:true,
    		    country:'',
    		    region:'',
+          city:'',
    		    regionName:'',
    		    countryList:[],
+          citiesList:[{'name':"none"}],
    		    idRegion:'',
    		    regionsList:[{'name':"none"}],
-   		    //regions:[],
-
    		  }
    	},
     props:['id','rem'],
@@ -65,8 +83,9 @@
 
       addReg:function(){
         if(this.id!=='2'){
+           this.$store.commit('addRegion',{'regionName':this.regionName,'idRegion':this.idRegion});
     	    this.$emit('regionAdded');
-          this.$store.commit('addRegion',{'regionName':this.regionName,'idRegion':this.idRegion});
+         
         }else{
           if(this.$store.state.regions>=1){
             this.$emit('disReg',this.rem);
@@ -84,16 +103,28 @@
     	  this.getRegions(item['id']);
     	},
     	regionChange:function(item){
+        // this.$emit('disReg',this.rem);
     	  this.idRegion = item['id'];
     	  this.regionName = item['name'];
+        this.getCities(item['id']);
     	},
     	getRegions:function(id){
     	  this.regionsList = main.getRegion(id);
     	},
+      cityChange:function(item){
+        this.idRegion = item['id'];
+        this.regionName = item['name'];
+      },
+      getCities:function(id){
+        this.citiesList = main.getRegion(id);
+      },
     	filter:function(list, query) {
+        console.log(query);
+        console.log(list);
+
     	  var arr = [];
     	  for (var i = 0; i < list.length; i++) {
-    	      if (list[i].name.indexOf(query) !== -1)
+    	      if (list[i].name.toLowerCase().indexOf(query) !== -1)
     	          arr.push(list[i]);
     	      if (arr.length > 5)
     	          break;

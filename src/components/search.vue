@@ -67,7 +67,6 @@
         this.rem = false;
         if(this.regions.length==0)this.disSearch = true;
         this.$emit('add');
-
       },
       regionAdded:function(regions){
         this.disSearch = false;
