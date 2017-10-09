@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 class Main{
 	check(chart,region,searchText,t,callback){
 		var response;
