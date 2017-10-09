@@ -1,5 +1,5 @@
 <template>
-	<div class="container" >
+	<div class="container" >{{regionss}}
     	<div class="row">
     	  <search v-on:add="addedReg" v-on:changeType="changeType" v-on:press="press"></search>
     	</div>
@@ -43,18 +43,15 @@ export default{
 			secondChart:null,
 			searchParams:[],
 			isFirst:true,
-			regions:[]
 		}
 	},
 	mounted:function(){
-		
-		console.log(this.count);
 		this.chart = main.chart();
 		this.secondChart = main.createSecondChart();	
 	},
 	computed: {
- 	  count () {
- 	    return this.$store.state.counts
+ 	  regionss () {
+ 	    return this.$store.state.regions
  	  }
  	},
 	components:{
@@ -65,31 +62,30 @@ export default{
 		changeType:function(){
 			this.isHide = true;
 			this.searchParams = [];
-			this.regions = [];	
+			this.$store.state.regions = [];	
 			this.values = [];
 		},
 		addValue:function(){
 			var data = [];
 			var searchParams = this.searchParams;
 			if(searchParams.length!==0){
-				this.regions.forEach(function(item){
+				this.$store.state.regions.forEach(function(item){
 					var response = main.ajax(item,searchParams);
 					data.push(main.treatment(response,item,searchParams));
 				});
 				var values = main.dataToValues(data);
 				this.values = values.vacancies;
-				main.updateChart(this.chart,data,this.regions);
+				main.updateChart(this.chart,data,this.$store.state.regions);
 				this.isFirst = false;
 			}
 		},
-		addedReg:function(regions){
-			if(regions.length!==0){
-				this.regions = regions;
+		addedReg:function(){
+			if(this.$store.state.regions.length!==0){
 				this.addValue();
 			}
 		},
 		tr: function(){
-			main.check(this.secondChart,this.regions[0],this.searchParams[0],this,function(t){
+			main.check(this.secondChart,this.$store.state.regions[0],this.searchParams[0],this,function(t){
 				t.spinnerIsHide = true;
 				t.secondType = false;
 			});
@@ -102,8 +98,8 @@ export default{
 				this.addValue();
 				this.spinnerIsHide = true;
 				this.isHide = false;
+				this.secondType = true;
 			}else{
-				console.log(this.regions);
 				this.tr();
 				this.searchParams = [];
 			}

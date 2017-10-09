@@ -1,6 +1,5 @@
 class Main{
 	check(chart,region,searchText,t,callback){
-		console.log(t);
 		var response;
 		var myVar = setInterval(this.inter.bind(null,t), 1000);
 		$.ajax({
@@ -21,7 +20,6 @@ class Main{
 		});	
 	}
 	inter(t){
-		console.log(t)
 		var main = new Main();
         main.ajax_progress(t);
 	}
@@ -34,18 +32,15 @@ class Main{
 		    	success : function(data){
 		    			data = parseInt(data);
 		    			t.progress = data;
-		    		 	console.log(data);
 		    	}
 		});	
 	};
 	succes(data,chart){
 		var response = data;
-		console.log(data);
 		response = JSON.parse(response,true);
 	    this.updateChartCheck(response,chart);
 	}
 	updateChartCheck(data,chart){
-		console.log(data);
        	chart.data.datasets = [];
        	chart.data.labels =[];
        	chart.data.datasets.push({
@@ -259,11 +254,6 @@ class Main{
 					} catch (err) {}
 			});	
 			var mid = sum/countVacanciesWithSalaryFrom;
-			console.log(item+'-----------'+mid);
-			//mid = Math.round(mid);
-				//var math = require('mathjs');
-				//console.log(math.median(salaryArray));
-			
 				data.push({
 					'mid':mid,
 					'countVacancies':countVacanciesWithSalaryFrom,
@@ -271,9 +261,6 @@ class Main{
 					'regionName':region['regionName']
 			});
 		});
-	
-		console.log('data:================');
-		console.log(data);
 		return data;
 	}
 	chart(){

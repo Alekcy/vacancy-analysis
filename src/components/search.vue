@@ -57,26 +57,25 @@
       changeRadio:function(id){
         if(id!==this.id){
           this.id = id;
+          this.disSearch = true;
+          this.regions = [];
           this.$emit('changeType');
         }
-      },
-      removeRegion:function(index){
+      },  
+      removeRegion:function(){
+        console.log('ddddddddd');
         this.rem = false;
-        this.regions.splice(index,1);
         if(this.regions.length==0)this.disSearch = true;
-        this.$emit('add',this.regions);
+        this.$emit('add');
 
       },
       regionAdded:function(regions){
-        this.regions = regions;
         this.disSearch = false;
-        //this.search();
-        this.$emit('add',this.regions);
+        this.$emit('add');
       },
       search:function(){
         var searchParams =[];
         if(this.searchField!==''){
-          
           this.$emit('press',this.searchField,this.id);
           this.searchField = '';
           this.dis = true;

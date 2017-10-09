@@ -53,7 +53,7 @@
    		    countryList:[],
    		    idRegion:'',
    		    regionsList:[{'name':"none"}],
-   		    regions:[],
+   		    //regions:[],
 
    		  }
    	},
@@ -64,20 +64,15 @@
     methods:{
 
       addReg:function(){
-        console.log(this.regions+this.id);
         if(this.id!=='2'){
-    	    this.regions.push({'regionName':this.regionName,'idRegion':this.idRegion});
-    	    this.$emit('regionAdded',this.regions);
-          this.$store.commit('addRegion',{regionName:this.regionName,idRegion:this.idRegion});
+    	    this.$emit('regionAdded');
+          this.$store.commit('addRegion',{'regionName':this.regionName,'idRegion':this.idRegion});
         }else{
-          if(this.regions.length>=1){
-            console.log('ddd');
+          if(this.$store.state.regions>=1){
             this.$emit('disReg',this.rem);
-             console.log(this.regions);
           }else{
-            this.regions.push({'regionName':this.regionName,'idRegion':this.idRegion});
-            this.$emit('regionAdded',this.regions);
-
+           this.$store.commit('addRegion',{'regionName':this.regionName,'idRegion':this.idRegion});
+            this.$emit('regionAdded');
           }
         }
     	},

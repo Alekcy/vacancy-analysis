@@ -12,18 +12,15 @@
 </template>
 <script>
 	export default{
-		props:[
-			'regions'
-		],
-		data:function(){
-			return{
-
+		computed:{
+			regions(){
+				return this.$store.state.regions
 			}
 		},
 		methods:{
 			remove:function(index){
-				console.log('remove');
-				this.$emit('remove',index);
+				this.$store.commit('removeRegion',index);
+				this.$emit('remove');
 			}
 		}
 	}
