@@ -1,31 +1,33 @@
 <template>
 	<div class="container" >
-    <div class="row">
-      <search v-on:add="addedReg" v-on:changeType="changeType" v-on:press="press"></search>
-    </div>
-    <div class="row" :class="{spinner:spinnerIsHide}">
-      <div class="col-md-12">
-       	<md-progress :md-progress="progress"></md-progress>
-      </div>
-    </div>
-    <div class="row" :class="{hide:isHide}">
-      <div class="col-md-4">
-        <cards :values='values' v-on:del='del'></cards>
-      </div>
-      <div class="col-md-8">
-        <canvas id="chart" width="400" height="400"></canvas>
-      </div>
-    </div>
-    <div class="row" :class="{secondChart:secondType}">
-    	<canvas id="secondChart" width="400" height="400"></canvas>
-    </div>
-  </div>
+    	<div class="row">
+    	  <search v-on:add="addedReg" v-on:changeType="changeType" v-on:press="press"></search>
+    	</div>
+    	<div class="row" :class="{spinner:spinnerIsHide}">
+    	  <div class="col-md-12">
+    	   	<md-progress :md-progress="progress"></md-progress>
+    	  </div>
+    	</div>
+    	<div class="row" :class="{hide:isHide}">
+    	  <div class="col-md-4">
+    	    <cards :values='values' v-on:del='del'></cards>
+    	  </div>
+    	  <div class="col-md-8">
+    	    <canvas id="chart" width="400" height="400"></canvas>
+    	  </div>
+    	</div>
+    	<div class="row" :class="{secondChart:secondType}">
+    		<canvas id="secondChart" width="400" height="400"></canvas>
+    	</div>
+  	</div>
 </template>
 <script>
 import Cards from './cards.vue';
 import Search from './search.vue';
 import Main from '../main.js'
 import Vue from 'vue';
+
+
  //var Vue = new Vue();
 var main = new Main();
 export default{
@@ -45,9 +47,16 @@ export default{
 		}
 	},
 	mounted:function(){
+		
+		console.log(this.count);
 		this.chart = main.chart();
 		this.secondChart = main.createSecondChart();	
 	},
+	computed: {
+ 	  count () {
+ 	    return this.$store.state.counts
+ 	  }
+ 	},
 	components:{
 		Cards,
 		Search

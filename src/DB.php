@@ -1,10 +1,12 @@
 <?php
+require ("config.php");
+
 function connectDB()
 {
-    $host = '127.0.0.1';
-    $db   = 'parser';
-    $user = 'root';
-    $pass = '';
+    $host = DB_HOST;
+    $db   = DB_NAME;
+    $user = DB_USER;
+    $pass = DB_PASS;
     $charset = 'utf8';
     $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
     $opt = [

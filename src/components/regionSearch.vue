@@ -68,6 +68,7 @@
         if(this.id!=='2'){
     	    this.regions.push({'regionName':this.regionName,'idRegion':this.idRegion});
     	    this.$emit('regionAdded',this.regions);
+          this.$store.commit('addRegion',{regionName:this.regionName,idRegion:this.idRegion});
         }else{
           if(this.regions.length>=1){
             console.log('ddd');

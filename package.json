@@ -27,7 +27,8 @@
     "materialize-css": "^0.100.2",
     "mathjs": "^3.16.3",
     "vue": "^2.4.4",
-    "vue-material": "^0.7.5"
+    "vue-material": "^0.7.5",
+    "vuex": "^2.4.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

@@ -22,7 +22,7 @@ class Check
 		$searchField = $_GET['searchText'];   
 		$regionId = $_GET['region'];
 		//$regionId  = 113;
-		$res = $client->request('GET','https://api.hh.ru/vacancies?area='.$regionId.'&text="'.$searchField.'"&per_page=50&page=0');  
+		$res = $client->request('GET','https://api.hh.ru/vacancies?area='.$regionId.'&text="'.$searchField.'"&per_page=500&page=0');  
 		$result =  $res->getBody();                                                                                        
 		$result = json_decode($result,true);                      
 		$masArray = [];     
