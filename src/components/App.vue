@@ -1,3 +1,8 @@
+<style>
+	.chart{
+		display: none;
+	}
+</style>
 <template>
 	<div class="container" >
     	<div class="row">
@@ -13,11 +18,28 @@
     	    <cards :values='values' v-on:del='del'></cards>
     	  </div>
     	  <div class="col-md-8">
-    	    <canvas id="chart" width="400" height="400"></canvas>
+    	  	<div class="row">
+    	  		<div class="col-md-12">
+    	  			<md-button-toggle md-single>
+					  <md-button md-toogle v-on:click="changeChart('mid')">Средняя ЗП</md-button>
+					  <md-button v-on:click="changeChart('median')">Медианная ЗП</md-button>
+					  <md-button v-on:click="changeChart('count')"> Количество вакансий</md-button>
+					</md-button-toggle>
+    	  		</div>	
+    	  	</div>
+    	  	<div class="row" :class="{chart:chartMidIsHide}">
+    	  		<canvas id="chart" width="100" height="50"></canvas>
+    	  	</div>
+    	  	<div class="row " :class="{chart:chartMedianIsHide}">
+    	  		<canvas id="chartMedian" width="100" height="50"></canvas>
+    	  	</div> 
+    	  	<div class="row " :class="{chart:chartCountVacanciesIsHide}">
+    	  		<canvas id="chartCountVacancies" width="100" height="50"></canvas>
+    	  	</div>
     	  </div>
     	</div>
     	<div class="row" :class="{secondChart:secondType}">
-    		<canvas id="secondChart" width="400" height="400"></canvas>
+    		<canvas id="secondChart" width="100" height="50"></canvas>
     	</div>
   	</div>
 </template>
@@ -32,6 +54,9 @@ var main = new Main();
 export default{
 	data:function(){
 		return{
+			chartCountVacanciesIsHide:true,
+			chartMidIsHide:false,
+			chartMedianIsHide:true,
 			secondType:true,
 			progress:0,
 			isHide:true,
@@ -39,13 +64,18 @@ export default{
 			searchField:'',
 			values:null,
 			chart:null,
+			chartMedian:null,
+			chartCountVacancies:null,
 			secondChart:null,
 			searchParams:[],
 			isFirst:true,
+			
 		}
 	},
 	mounted:function(){
-		this.chart = main.chart();
+		this.chart = main.createMidChart();
+		this.chartMedian  = main.createChartMedian();
+		this.chartCountVacancies = main.createChartCountVacancies();
 		this.secondChart = main.createSecondChart();	
 	},
 	components:{
@@ -53,6 +83,23 @@ export default{
 		Search
 	},
 	methods:{
+		changeChart:function(type){
+			console.log('change type detected');
+			if(type=="mid"){
+				this.chartMidIsHide = false;
+				this.chartMedianIsHide = true;
+				this.chartCountVacanciesIsHide = true;
+			}
+			else if(type=="median") {
+				this.chartMedianIsHide = false;
+				this.chartMidIsHide = true;
+				this.chartCountVacanciesIsHide = true;
+			}else{
+				this.chartMidIsHide = true;
+				this.chartMedianIsHide = true;
+				this.chartCountVacanciesIsHide = false;
+			}
+		},
 		changeType:function(){
 			this.isHide = true;
 			this.searchParams = [];
@@ -69,7 +116,8 @@ export default{
 				});
 				var values = main.dataToValues(data);
 				this.values = values.vacancies;
-				main.updateChart(this.chart,data,this.$store.state.regions);
+				var charts = [this.chart,this.chartMedian,this.chartCountVacancies];
+				main.updateChart(charts,data,this.$store.state.regions);
 				this.isFirst = false;
 			}
 		},
@@ -101,7 +149,8 @@ export default{
 		del:function(index){
 			Vue.delete(this.values,index);
 			this.searchParams.splice(index,1);
-			main.removeData(this.chart,index);
+			var charts  = [this.chart,this.chartMedian,this.chartCountVacancies];
+			main.removeData(charts,index);
 		}
 	}
 }

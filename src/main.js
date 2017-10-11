@@ -46,7 +46,7 @@ class Main{
        	chart.data.datasets = [];
        	chart.data.labels =[];
        	chart.data.datasets.push({
-	       		label: 's',
+	       		label: '',
 	       		data: [],
 	       		backgroundColor: [
 	       		  'rgba(255, 99, 132, 0.2)',
@@ -83,13 +83,14 @@ class Main{
 				if(j==0)values.vacancies[i] = ({'title':data[j][i].title,
 									  'regions':{}});
 				values.vacancies[i].regions[j] = ({'regionName':data[j][i].regionName,
+										 'medianSalary':data[j][i].medianSalary,
 										 'mid':data[j][i].mid,
 										 'countVacancies':data[j][i].countVacancies});
 			}
 		};
 		return values;
 	}
-	updateChart(chart, data,regions){
+	updateChart(charts, data,regions){
 		var backgroundColor = [
 						'rgba(255, 99, 132, 0.2)',
 	       		        'rgba(54, 162, 235, 0.2)',
@@ -103,10 +104,15 @@ class Main{
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'];
-       	chart.data.datasets = [];
-       	chart.data.labels =[];
+
+        charts.forEach(function(chart){
+        	console.log(chart);
+			chart.data.datasets = [];
+       		chart.data.labels =[];
+        });	
        	regions.forEach(function(region,i){
-       		chart.data.datasets.push({
+       		charts.forEach(function(chart){
+       			chart.data.datasets.push({
 	       		label: region['regionName'],
 	       		data: [],
 	       		backgroundColor: [
@@ -128,21 +134,32 @@ class Main{
 	       		],
 	       		borderWidth: 1
 	       	});
+       		});
+       		
        	});      
         data.forEach(function(arr,j){
 			arr.forEach(function(item,i){
-				chart.data.datasets[j].data.push(item['mid']);
-				if(j==0)chart.data.labels.push(item['title']);
+				charts[0].data.datasets[j].data.push(item['mid']);
+				if(j==0)charts[0].data.labels.push(item['title']);
+				charts[1].data.datasets[j].data.push(item['medianSalary']);
+				if(j==0)charts[1].data.labels.push(item['title']);
+				charts[2].data.datasets[j].data.push(item['countVacancies']);
+				if(j==0)charts[2].data.labels.push(item['title']);
 			});	
         });
-		chart.update();	
+		charts[0].update();	
+		charts[1].update();	
+		charts[2].update();
+
 	}
-	removeData(chart,index) {
-	    chart.data.labels.splice(index,1);
-	    chart.data.datasets.forEach((dataset) => {
-	        dataset.data.splice(index,1);
-	    });
-	    chart.update();
+	removeData(charts,index) {
+		charts.forEach(function(chart){
+			chart.data.labels.splice(index,1);
+	    	chart.data.datasets.forEach((dataset) => {
+	    	    dataset.data.splice(index,1);
+	    	});
+	    	chart.update();
+		});
 	}
 	getChangeRate(){
 		var response;
@@ -240,7 +257,7 @@ class Main{
 			var countVacanciesWithSalaryFrom = 0;
 			var salaryArray=[];
 			var sum = 0;
-			
+		
 			response[i].forEach(function(r, j, vacancie) {
 					try {
 				  		if(vacancie[j]['salary']['from']!==null){
@@ -255,8 +272,11 @@ class Main{
 				  		}
 					} catch (err) {}
 			});	
-			var mid = sum/countVacanciesWithSalaryFrom;
-				data.push({
+			let main = new Main();
+			let medianSalary = main.median(salaryArray);
+			var mid = Math.round(sum/countVacanciesWithSalaryFrom);
+			data.push({
+					'medianSalary':medianSalary,
 					'mid':mid,
 					'countVacancies':countVacanciesWithSalaryFrom,
 					'title':item,
@@ -265,8 +285,25 @@ class Main{
 		});
 		return data;
 	}
-	chart(){
-		var ctx = document.getElementById("chart");
+	median(values) {
+    	values.sort( function(a,b) {return a - b;} );
+    	var half = Math.floor(values.length/2);
+    	if(values.length % 2)
+    	    return values[half];
+    	else
+        return (values[half-1] + values[half]) / 2.0;
+	}
+	createMidChart(){
+		return this.chart('chart');
+	}
+	createChartMedian(){
+		return this.chart('chartMedian');
+	}
+	createChartCountVacancies(){
+		return this.chart('chartCountVacancies');
+	}
+	chart(ctx){
+		//var ctx = document.getElementById("chart");
 		var chart = new Chart(ctx, {
 	    	type: 'bar',
 	    	data: {
@@ -274,7 +311,8 @@ class Main{
 	    	    datasets: []
 	    	},
 	    	options: {
-	    		//responsive:false,
+	    		responsive:true, 
+	    		//maintainAspectRatio: true,
 	    	    scales: {
 	    	        yAxes: [{
 	    	            ticks: {

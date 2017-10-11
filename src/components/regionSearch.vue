@@ -3,7 +3,7 @@
           <div class="col-md-3">
             <form novalidate @submit.stop.prevent="submit">
                 <md-input-container>
-                  <label>Choose a country</label>
+                  <label>Страна</label>
                   <md-autocomplete v-model="country" 
                                 :list="countryList"
                                  print-attribute="name"
@@ -19,7 +19,7 @@
             <div class="col-md-3">
               <form  novalidate @submit.stop.prevent="submit">
                <md-input-container>
-                <label>Choose a region</label>
+                <label>Регион</label>
                 <md-autocomplete  v-model="region" 
                               :disabled="dis"
                               :list="regionsList"
@@ -37,7 +37,7 @@
             <div class="col-md-3">
               <form  novalidate @submit.stop.prevent="submit">
                <md-input-container>
-                <label>Choose a region</label>
+                <label>Город</label>
                 <md-autocomplete  v-model="city" 
                               :disabled="dis"
                               :list="citiesList"
@@ -53,7 +53,7 @@
               </form>
             </div>
             <div class="col-md-3">
-              <md-button :disabled="disRegBtn" v-on:click='addReg' class="md-primary md-raised col-md-12">Add Region</md-button>
+              <md-button :disabled="disRegBtn" v-on:click='addReg' class="md-primary md-raised col-md-12">Добавить</md-button>
             </div>
         </div>
 </template>

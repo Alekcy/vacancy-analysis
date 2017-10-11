@@ -5,13 +5,13 @@
       <RegionsList :regions="regions" v-on:remove="removeRegion"></RegionsList>
     </div>
     <div class="row">
-      <div class="col-md-10">
+      <div class="col-md-9">
         <md-input-container>
-            <label>Search field</label>
+            <label>Поисковый запрос</label>
             <md-input v-model="searchField"></md-input>
         </md-input-container>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-3">
         <md-button :disabled="disSearch" v-on:click='search' class="md-primary md-raised col-md-12">Поиск</md-button>
       </div>
     </div>
