@@ -3,23 +3,114 @@
 <head>
 	<title></title>
 	<link rel="stylesheet" type="text/css" href="src/styles/bootstrap-grid.css">
+		<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">
-		.row{
-			background-color: #64B5F6;
-			
+		@font-face {
+		  font-family:NotoSans-Regular;
+		  src: url(src/fonts/NotoSans-Regular.ttf);
 		}
-		.s{
-			height: 100%;
+		@font-face {
+		  font-family:OpenSansCondensed;
+		  src: url(src/fonts/OpenSansCondensed-Light.ttf);
+		}
+		@media all and (max-width: 480px) {
+		    .main-content{
+		    	top: 1vh!important;
+		    }
+		}
+		body{}
+		h1{
+			color: white;
+			font-size: 60px;
+			text-align: center;
+		}
+		.row{
+			font-family: NotoSans-Regular, sans-serif; 	
+			color: white;
+			font-size: 30px;
+		}
+		.main{
+			background-color: #64B5F6;
+			min-height: 100vh;
+		}
+		.main-content{
+			position: relative;
+			top: 30vh;
+		}
+		a{text-decoration: none;}
+		a:hover{text-decoration: none;}
+		.main-btn{
+			width: 250px;
+			border:none;
+			color: #373737;
+			font-size: 26px;
+			background: #1DE9B6;
+			text-align: center;
+			text-decoration: none;
+			box-shadow: 0 1px 10px 0px rgba(0,0,0,0.5);
+		}
+		.main-label{
+			font-family: OpenSansCondensed,sans-serif;
+			font-size: 36px;
+			text-align: center;
+		}
+		.d{
+			background-color: #45FEB4;
+			min-height: 100vh;
+		}
+		.second-section{
+			min-height: 100vh;
+			background-color: #45FEB4;
+			color: black;
+		}
+		.img1{
+			background-image: url('src/img/1.jpg');
+		}
+		img{
+			width: 100%;
+				image-rendering: -moz-crisp-edges;         /* Firefox */
+   			 image-rendering:   -o-crisp-edges;         /* Opera */
+   			 image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+   			 image-rendering: crisp-edges;
+   			 -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+   		
 		}
 	</style>
 </head>
 <body>
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-12 s">s</div>
+		<div class="col-md-12 main">
+			<div class="col-md-8 col-md-offset-2 main-content">
+				<div class="row">
+					<div class="col-md-12"><h1>HH-vacancie-analysis.ru</h1></div>
+				</div>
+				<div class="row">
+					<a href="app">
+						<div class="col-md-offset-4 center-block main-btn">Начать</div>
+					</a>
+				</div>
+				<div class="row">
+					<div class="main-label">Сервис для анализа вакансий HH.ru</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="row">
-		
+		<div class="col-md-12 second-section">
+			<div class="col-md-3">
+				Сравнивайте средние и медианные 
+				зарплаты для разных регионов 
+				и специальностей
+			</div>
+			<div class="col-md-9">
+				<div class="">
+					<img  src="src/img/2.png">
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="row">
 		

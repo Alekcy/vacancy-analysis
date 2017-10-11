@@ -7,6 +7,9 @@ $app->get('/',function(){
 	require_once 'index.html';
 
 });
+$app->get('/app',function(){
+	require_once 'app.html';
+});
 $app->get('/check',function(){
 	$check = new Check();
 	$json = $check->checke();
