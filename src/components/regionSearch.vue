@@ -53,7 +53,7 @@
               </form>
             </div>
             <div class="col-md-3">
-              <md-button :disabled="rem" v-on:click='addReg' class="md-primary md-raised col-md-12">Add Region</md-button>
+              <md-button :disabled="disRegBtn" v-on:click='addReg' class="md-primary md-raised col-md-12">Add Region</md-button>
             </div>
         </div>
 </template>
@@ -75,35 +75,50 @@
    		    regionsList:[{'name':"none"}],
    		  }
    	},
-    props:['id','rem'],
+    props:['id'],
+    computed:{
+      disRegBtn(){
+        return this.$store.state.disRegBtn;
+      }
+    },
 		mounted:function(){
    		  this.countryList = main.getCountry();
-   		},
+   	},
     methods:{
 
       addReg:function(){
-        if(this.id!=='2'){
-           this.$store.commit('addRegion',{'regionName':this.regionName,'idRegion':this.idRegion});
-    	    this.$emit('regionAdded');
-         
-        }else{
-          if(this.$store.state.regions>=1){
-            this.$emit('disReg',this.rem);
+        this.country = '';
+        this.region = '';
+        this.city = '';
+        if((this.idRegion!=='')&&(this.regionName!=='')){
+          if(this.id!=='2'){
+             this.$store.commit('addRegion',{'regionName':this.regionName,'idRegion':this.idRegion});
+    	     this.$emit('regionAdded');
+           
           }else{
-           this.$store.commit('addRegion',{'regionName':this.regionName,'idRegion':this.idRegion});
-            this.$emit('regionAdded');
+            if(this.$store.state.regions>=1){
+              this.$store.commit('disRegBtnIsFalse');
+            }else{
+             this.$store.commit('addRegion',{'regionName':this.regionName,'idRegion':this.idRegion});
+              this.$emit('regionAdded');
+            }
           }
         }
+        this.regionName = '';
+        this.idRegion = '';
+        this.$store.commit('disRegBtnIsTrue');
     	},
     	countryChange:function(item){
-    	  this.$emit('disReg',this.rem);
+        if((this.id!=='2')||(this.$store.state.regions.length<1)){
+          this.$store.commit('disRegBtnIsFalse');
+        }
     	  this.dis = false;
     	  this.idRegion = item['id'];
     	  this.regionName = item['name'];
     	  this.getRegions(item['id']);
     	},
     	regionChange:function(item){
-        // this.$emit('disReg',this.rem);
+        // this.$emit('disReg',this.disRegBtn);
     	  this.idRegion = item['id'];
     	  this.regionName = item['name'];
         this.getCities(item['id']);
@@ -119,12 +134,9 @@
         this.citiesList = main.getRegion(id);
       },
     	filter:function(list, query) {
-        console.log(query);
-        console.log(list);
-
     	  var arr = [];
     	  for (var i = 0; i < list.length; i++) {
-    	      if (list[i].name.toLowerCase().indexOf(query) !== -1)
+    	      if ((list[i].name.toLowerCase().indexOf(query) !== -1)||(list[i].name.indexOf(query)!==-1))
     	          arr.push(list[i]);
     	      if (arr.length > 5)
     	          break;

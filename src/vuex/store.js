@@ -6,7 +6,8 @@ Vue.use(Vuex)
 
 const state={
 	counts:0,
-	regions:[]
+	regions:[],
+	disRegBtn:true
 }	
 const mutations = {
 	addRegion(state,newRegion){
@@ -14,6 +15,12 @@ const mutations = {
 	},
 	removeRegion(state,index){
 		state.regions.splice(index,1);
+	},
+	disRegBtnIsFalse(state){
+		state.disRegBtn = false;
+	},
+	disRegBtnIsTrue(state){
+		state.disRegBtn = true;
 	}
 }
 export default new Vuex.Store({

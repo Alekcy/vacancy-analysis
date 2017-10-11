@@ -1,6 +1,6 @@
 <template>
   <div>
-    <RegionSearch v-bind:id="id" v-bind:rem="rem" v-on:disReg="disReg" v-on:regionAdded="regionAdded" :disSearch="disSearch"></RegionSearch>
+    <RegionSearch v-bind:id="id"  v-on:disReg="disReg" v-on:regionAdded="regionAdded" :disSearch="disSearch"></RegionSearch>
     <div class="row">
       <RegionsList :regions="regions" v-on:remove="removeRegion"></RegionsList>
     </div>
@@ -41,8 +41,7 @@
         disSearch:true,
         dis:true,
         searchField:'',
-        regions:[],
-        rem:true
+        regions:[]
       }
     },
     components:{
@@ -50,9 +49,9 @@
       RegionsList
     },
     methods:{
-      disReg:function(rem){
-        if(rem===true)this.rem = false;
-        else this.rem = true;
+      disReg:function(disRegBtn){
+        if(disRegBtn===true)this.disRegBtn = false;
+        else this.disRegBtn = true;
       },
       changeRadio:function(id){
         if(id!==this.id){
@@ -63,8 +62,14 @@
         }
       },  
       removeRegion:function(){
-        console.log('ddddddddd');
-        this.rem = false;
+        if(this.id=='2'){
+          this.$store.commit('disRegBtnIsFalse');
+        }else{
+          if(this.$store.state.regions.length==0){
+            this.$store.commit('disRegBtnIsTrue');
+          }
+        }
+        
         if(this.regions.length==0)this.disSearch = true;
         this.$emit('add');
       },
