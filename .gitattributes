@@ -1,1 +1,4 @@
-/vendor/* 
+* linguist-vendored
+*.vue linguist-vendored=false
+src/* linguist-vendored=false
+src/styles/* linguist-vendored
