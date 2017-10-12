@@ -162,20 +162,26 @@ class Main{
 		});
 	}
 	getChangeRate(){
-		var response;
-		$.ajax({
-		    	url : "https://query.yahooapis.com/v1/public/yql?q=select+*+from+yahoo.finance.xchange+where+pair+=+%22USDRUB%22&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=",
-		    	type : "GET",
-		    	jsonp: "callback",
-		    	async: false,
-		    	dataType : "text",
-		    	success : function(data){
-		    	    response = data;
-		    	}	
-		});
-		response = JSON.parse(response,true);
-		var usdToRur = response.query.results.rate.Rate;
-		return usdToRur;
+		try{
+			var response;
+			$.ajax({
+			    	url : "https://query.yahooapis.com/v1/public/yql?q=select+*+from+yahoo.finance.xchange+where+pair+=+%22USDRUB%22&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=",
+			    	type : "GET",
+			    	jsonp: "callback",
+			    	async: false,
+			    	dataType : "text",
+			    	success : function(data){
+			    	    response = data;
+			    	}	
+			});
+			response = JSON.parse(response,true);
+			var usdToRur = response.query.results.rate.Rate;
+			console.log('dddddddddddddddddddddddddddddddddddddddddddddddddddddddd'+usdToRur);
+			return usdToRur;
+		}catch($err){
+			return 60;
+		}
+		
 	}
 	ajax(region,searchParams){
 		var response=[];
@@ -207,6 +213,7 @@ class Main{
 					console.log(countPages);
 					tempData = JSON.parse(tempData,true);
 	    			tempData = tempData['items'];
+	    			if(tempData.length==0)break;
 	    			console.log(tempData);
 	    			console.log(dat);
 	    			tempData.forEach(function(d){
@@ -226,7 +233,7 @@ class Main{
 		console.log(response);
 		return response;
 	}
-	otherСurrenciesToRUR(salary,changeRate){
+	otherCurrenciesToRUR(salary,changeRate){
 		salary = changeRate*salary;
 		return salary;
 	}
@@ -273,29 +280,34 @@ class Main{
 	treatment(response,region,searchParams){
 		var data = [];
 		var changeRate = this.getChangeRate();
+		console.log('-------------------');
+		console.log(response);
+
 		searchParams.forEach(function(item,i){
 			
-			var countVacanciesWithSalaryFrom = 0;
+			var countVacanciesWithSalaryFrom = 0;	
 			var salaryArray=[];
 			var sum = 0;
 		
 			response[i].forEach(function(r, j, vacancie) {
-					try {
-				  		if(vacancie[j]['salary']['from']!==null){
+				
+				  		console.log(vacancie[j]['salary']['from']);
+				  		console.log(countVacanciesWithSalaryFrom);
 				  			if(vacancie[j]['salary']['currency']=='USD'){
 				  				var main = new Main();
 				  				sum += main.otherCurrenciesToRUR(vacancie[j]['salary']['from'],changeRate);
 				  			}else{
 				  				sum += vacancie[j]['salary']['from'];
 				  			}
-				  			countVacanciesWithSalaryFrom++;
+				  			countVacanciesWithSalaryFrom = countVacanciesWithSalaryFrom + 1;
 				  			salaryArray.push(vacancie[j]['salary']['from']);
-				  		}
-					} catch (err) {}
+				  		
+				
 			});	
 			let main = new Main();
 			let medianSalary = main.median(salaryArray);
 			var mid = Math.round(sum/countVacanciesWithSalaryFrom);
+			console.log('countVacanciesWithSalaryFrom'+countVacanciesWithSalaryFrom);
 			data.push({
 					'medianSalary':medianSalary,
 					'mid':mid,
