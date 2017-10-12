@@ -180,29 +180,50 @@ class Main{
 	ajax(region,searchParams){
 		var response=[];
 		searchParams.forEach(function(item,i,arr){
-			var dat;
-			$.ajax({
-		    	url : "https://api.hh.ru/vacancies",
-		    	type : "GET",
-		    	jsonp: "callback",
-		    	async: false,
-		    	data:{
-		    		'area':region['idRegion'],
-		    		'text':item,
-		    		'per_page':500,
-		    		'page':0,//first page is zero
-		    		'only_with_salary':true
-		    	},
-		    	dataType : "text",
-		    	success : function(data){
-		    	    
-		    	    dat=data;
-		    	}	
-			});
-			dat = JSON.parse(dat,true);
-	    	dat = dat['items'];
+			var dat = [];
+			var check = 'true';
+			var countPages = 0;
+			while(countPages<20){
+				var tempData;
+				
+				$.ajax({
+		    		url : "https://api.hh.ru/vacancies",
+		    		type : "GET",
+		    		jsonp: "callback",
+		    		async: false,
+		    		data:{
+		    			'area':region['idRegion'],
+		    			'text':item,
+		    			'per_page':100,
+		    			'page':countPages,//first page is zero
+		    			'only_with_salary':true
+		    		},
+		    		dataType : "text",
+		    		success : function(data){  
+		    		    tempData=data;
+		    		}	
+				});
+				try{
+					console.log(countPages);
+					tempData = JSON.parse(tempData,true);
+	    			tempData = tempData['items'];
+	    			console.log(tempData);
+	    			console.log(dat);
+	    			tempData.forEach(function(d){
+	    				dat.push(d);
+	    			});
+	    			countPages++;
+	    		}catch($err){
+	    			console.log($err);
+	    			check = false;
+	    			break;
+	    		}
+			}
+			
 	    	response.push(dat);
 		});
+		console.log('resoin');
+		console.log(response);
 		return response;
 	}
 	otherСurrenciesToRUR(salary,changeRate){
