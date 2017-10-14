@@ -176,12 +176,10 @@ class Main{
 			});
 			response = JSON.parse(response,true);
 			var usdToRur = response.query.results.rate.Rate;
-			console.log('dddddddddddddddddddddddddddddddddddddddddddddddddddddddd'+usdToRur);
 			return usdToRur;
 		}catch($err){
 			return 60;
 		}
-		
 	}
 	ajax(region,searchParams){
 		var response=[];

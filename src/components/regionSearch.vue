@@ -112,10 +112,18 @@
         if((this.id!=='2')||(this.$store.state.regions.length<1)){
           this.$store.commit('disRegBtnIsFalse');
         }
-    	  this.dis = false;
-    	  this.idRegion = item['id'];
-    	  this.regionName = item['name'];
-    	  this.getRegions(item['id']);
+        let promise = new Promise((resolve, reject) => {
+          this.getRegions(item['id']);
+          resolve('result');
+        });
+        promise
+          .then(
+            result => {
+                  this.dis = false;
+                  this.idRegion = item['id'];
+                  this.regionName = item['name'];
+            }
+          );  
     	},
     	regionChange:function(item){
         // this.$emit('disReg',this.disRegBtn);

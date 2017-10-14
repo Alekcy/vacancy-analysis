@@ -8,22 +8,27 @@
     	<div class="row">
     	  <search v-on:add="addedReg" v-on:changeType="changeType" v-on:press="press"></search>
     	</div>
-    	<div class="row" :class="{spinner:spinnerIsHide}">
+    	<div class="row" :class="{spinner:progressBarIsHide}">
     	  <div class="col-md-12">
     	   	<md-progress :md-progress="progress"></md-progress>
     	  </div>
+    	</div>
+    	<div class="row" :class="{spinner:spinnerIsHide}">
+    		<div class="col-md-12">
+    			<md-spinner :md-size="150" :md-stroke="1" md-indeterminate></md-spinner>
+    		</div>
     	</div>
     	<div class="row" :class="{hide:isHide}">
     	  <div class="col-md-4">
     	    <cards :values='values' v-on:del='del'></cards>
     	  </div>
-    	  <div class="col-md-8">
+    	 <div class="col-md-8">
     	  	<div class="row">
     	  		<div class="col-md-12">
     	  			<md-button-toggle md-single>
-					  <md-button md-toogle v-on:click="changeChart('mid')">Средняя ЗП</md-button>
-					  <md-button v-on:click="changeChart('median')">Медианная ЗП</md-button>
-					  <md-button v-on:click="changeChart('count')"> Количество вакансий</md-button>
+						<md-button md-toogle v-on:click="changeChart('mid')">Средняя ЗП</md-button>
+						<md-button v-on:click="changeChart('median')">Медианная ЗП</md-button>
+						<md-button v-on:click="changeChart('count')"> Количество вакансий</md-button>
 					</md-button-toggle>
     	  		</div>	
     	  	</div>
@@ -36,7 +41,7 @@
     	  	<div class="row " :class="{chart:chartCountVacanciesIsHide}">
     	  		<canvas id="chartCountVacancies" width="100" height="50"></canvas>
     	  	</div>
-    	  </div>
+    	 </div>
     	</div>
     	<div class="row" :class="{secondChart:secondType}">
     		<canvas id="secondChart" width="100" height="50"></canvas>
@@ -61,6 +66,7 @@ export default{
 			progress:0,
 			isHide:true,
 			spinnerIsHide:true,
+			progressBarIsHide:true,
 			searchField:'',
 			values:null,
 			chart:null,
@@ -106,12 +112,13 @@ export default{
 			this.$store.state.regions = [];	
 			this.values = [];
 		},
-		addValue:function(){
+		addValue:function(callback){
 			var data = [];
 			var searchParams = this.searchParams;
 			if(searchParams.length!==0){
 				this.$store.state.regions.forEach(function(item){
 					var response = main.ajax(item,searchParams);
+
 					data.push(main.treatment(response,item,searchParams));
 				});
 				var values = main.dataToValues(data);
@@ -120,10 +127,15 @@ export default{
 				main.updateChart(charts,data,this.$store.state.regions);
 				this.isFirst = false;
 			}
+			callback(this);
 		},
 		addedReg:function(){
+
 			if(this.$store.state.regions.length!==0){
-				this.addValue();
+				this.spinnerIsHide = false;
+				this.addValue(function(t){
+					t.spinnerIsHide = true;
+				});
 			}
 		},
 		tr: function(){
@@ -133,14 +145,22 @@ export default{
 			});
 		},
 		press:function(searchField,id){
+			if(id=='2')this.progressBarIsHide = false;
+			else this.spinnerIsHide = false;
 			this.searchField = searchField;
 			this.searchParams.push(searchField);
-			this.spinnerIsHide = false;
-			if(id!=='2'){
-				this.addValue();
-				this.spinnerIsHide = true;
-				this.isHide = false;
-				this.secondType = true;
+			setTimeout(this.p,1000,id);
+	
+		},
+		p:function(id){
+			console.log('pidaras ebanii');
+			if(id!=='2'){	
+				console.log('ne 2');
+				setTimeout(this.addValue,1000,function(t){
+					t.spinnerIsHide = true;
+					t.isHide = false;
+					t.secondType = true;
+				});	
 			}else{
 				this.tr();
 				this.searchParams = [];
