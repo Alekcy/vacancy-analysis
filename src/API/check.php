@@ -22,7 +22,7 @@ class Check
 		$searchField = $_GET['searchText'];   
 		$regionId = $_GET['region'];
 		//$regionId  = 113;
-		$res = $client->request('GET','https://api.hh.ru/vacancies?area='.$regionId.'&text="'.$searchField.'"&per_page=500&page=0');  
+		$res = $client->request('GET','https://api.hh.ru/vacancies?area='.$regionId.'&text="'.$searchField.'"&per_page=100&page=0');  
 		$result =  $res->getBody();                                                                                        
 		$result = json_decode($result,true);                      
 		$masArray = [];     
@@ -52,8 +52,7 @@ class Check
 	{ 
 	    $resArray = [];                                                                                                
 	    $word = '';                                                                                                    
-	    foreach ($arr as $key => $value) {                                                                             
-	                                                                                                                   
+	    foreach ($arr as $key => $value) {
 	        $word  = trim($value);                                                                                     
 	        $word = strip_tags($word);                                                                                 
 	        $word = strtolower($word);                                                                                 
@@ -83,8 +82,7 @@ class Check
 	                }                                                                                                  
 	            }                                                                                                      
 	        }                                                                                                          
-	    }                                                                                                              
-	    //print_r($arr);    
+	    }                                                                                                                 
 	    return $arr;                                                                                             
 	}                                                                                                                  
 	private function checkArray($arr,$word)                                                                                    

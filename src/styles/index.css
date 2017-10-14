@@ -1,0 +1,137 @@
+@font-face {
+		  font-family:NotoSans-Regular;
+		  src: url(../fonts/NotoSans-Regular.ttf);
+		}
+		@font-face {
+		  font-family:OpenSansCondensed;
+		  src: url(../fonts/OpenSansCondensed-Light.ttf);
+		}
+		a{text-decoration: none;}
+		a:hover{text-decoration: none;}
+		h1{
+			color: white;
+			font-size: 60px;
+			text-align: center;
+		}
+		img{
+			image-rendering: -moz-crisp-edges;
+   			image-rendering:   -o-crisp-edges;
+   			image-rendering: -webkit-optimize-contrast;
+   			image-rendering: crisp-edges;
+   			-ms-interpolation-mode: nearest-neighbor; 
+		}
+		@media all and (max-width: 768px) {
+		    .main-content{
+		    	top: 1vh!important;
+		    }
+		}
+		.row{
+			font-family: NotoSans-Regular, sans-serif; 	
+			font-size: 30px;
+		}
+		/* main section */
+		.main{
+			background-color: #F37B6D;
+			min-height: 100vh;
+		}
+		.main-content{
+			position: relative;
+			top: 30vh;
+			color: white;
+		}
+		.main-btn{
+			width: 250px;
+			border:none;
+			color: white;
+			font-size: 26px;
+			background: #E841DC;
+			text-align: center;
+			text-decoration: none;
+			box-shadow: 0 2px 5px 0px rgba(0,0,0,0.5);
+		}
+		.main-btn:hover{
+			background: #E450DA;
+			box-shadow: 0 1px 3px 0px rgba(0,0,0,0.5);
+		}
+		.main-label{
+			font-family: OpenSansCondensed,sans-serif;
+			font-size: 36px;
+			text-align: center;
+		}
+		/* second section */
+		.second-section{
+			min-height: 100vh;
+			background-color: #45FEB4;
+			color: black;
+		}
+		.img1{
+			max-width: 100%;
+			max-height: 90vh;
+			top: 5vh;
+			position: relative;
+			box-shadow: -10px 7px 15px 0px rgba(0,0,0,0.5);
+		}
+		@media all and (min-width: 1000px){
+			.content{
+				top: 30vh;
+			}
+		}
+		.content{
+			color: #515050;
+			margin:0px;
+			position: relative;
+		}
+		.second-section-content{
+			text-align: right;
+		}
+		/* third-section */
+		.third-section{
+			min-height: 100vh;
+			background-color: #FFD44B;
+		}
+		
+		.footer{
+			min-height: 100px;
+			background-color: #FE7CF6;
+		}
+		#footer-content-1{
+			text-align: left;
+		}
+		#footer-content-2{
+			text-align: right;
+		}
+		.img2{
+				max-width: 100%;
+				max-height: 80vh;
+				
+				position: relative;
+				box-shadow: 10px 7px 15px 0px rgba(0,0,0,0.5);
+			}
+		@media all and (min-width: 1000px){
+			.img2{
+				top: 15vh;
+			}
+			.visible-sm{
+				display: none;
+			}
+		}
+
+		@media all and (min-width: 601px) and (max-width: 1000px){
+			.img2{
+				top: 0px;
+			}
+
+		}
+		@media all and (max-width: 1000px){
+			.hidden-sm{
+				display: none;
+			}
+			.visible-sm{
+				display: block;
+			}
+		}
+		@media all and (max-width: 600px){
+			.img2{
+				top: 10vh!important;
+			}
+		}

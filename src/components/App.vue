@@ -14,7 +14,7 @@
     	  </div>
     	</div>
     	<div class="row" :class="{spinner:spinnerIsHide}">
-    		<div class="col-md-12">
+    		<div class="col-md-2 col-md-offset-5">
     			<md-spinner :md-size="150" :md-stroke="1" md-indeterminate></md-spinner>
     		</div>
     	</div>
@@ -90,7 +90,6 @@ export default{
 	},
 	methods:{
 		changeChart:function(type){
-			console.log('change type detected');
 			if(type=="mid"){
 				this.chartMidIsHide = false;
 				this.chartMedianIsHide = true;
@@ -153,9 +152,7 @@ export default{
 	
 		},
 		p:function(id){
-			console.log('pidaras ebanii');
 			if(id!=='2'){	
-				console.log('ne 2');
 				setTimeout(this.addValue,1000,function(t){
 					t.spinnerIsHide = true;
 					t.isHide = false;

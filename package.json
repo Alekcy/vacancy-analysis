@@ -19,13 +19,10 @@
   },
   "homepage": "https://github.com/Alekcy/vacancy-analysis#readme",
   "dependencies": {
-    "axios": "^0.16.2",
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "chart.js": "^2.7.0",
     "jquery": "^3.2.1",
-    "materialize-css": "^0.100.2",
-    "mathjs": "^3.16.3",
     "vue": "^2.4.4",
     "vue-material": "^0.7.5",
     "vuex": "^2.4.1"

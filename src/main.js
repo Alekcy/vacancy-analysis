@@ -5,7 +5,7 @@ class Main{
 		var response;
 		var myVar = setInterval(this.inter.bind(null,t), 1000);
 		$.ajax({
-		    	url : "/3/vacancy-analysis/check",
+		    	url : "/check",
 		    	type : "GET",
 		    	jsonp: "callback",
 		    	data:{
@@ -27,7 +27,7 @@ class Main{
 	}
 	ajax_progress(t){
 		$.ajax({
-		    	url : "/3/vacancy-analysis/check/progress",
+		    	url : "/check/progress",
 		    	type : "GET",
 		    	jsonp: "callback",
 		    	dataType : "text",
